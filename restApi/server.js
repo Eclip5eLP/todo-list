@@ -21,6 +21,17 @@ server.get("/", (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
+server.get("/api/search/:name", (req, res) => {
+   const itemName = req.params.name;
+   const items = db.entries.find({ name: itemName });
+
+   if (items.length) {
+      res.json(items);
+   } else {
+      res.json([])
+   }
+});
+
 server.get("/api", (req, res) => {
    res.json(db.entries.find());
 });
@@ -32,13 +43,13 @@ server.get("/api/:id", (req, res) => {
    if (items.length) {
       res.json(items);
    } else {
-      res.json({ message: `item ${itemId} doesn't exist` })
+      res.json({ message: `entry ${itemId} doesn't exist` })
    }
 });
 
 server.post("/api", (req, res) => {
    const item = req.body;
-   console.log('Adding new item: ', item);
+   console.log('Adding new entry: ', item);
 
    // add new item to array
    db.entries.save(item);
@@ -51,7 +62,7 @@ server.post("/api", (req, res) => {
 server.put("/api/:id", (req, res) => {
    const itemId = req.params.id;
    const item = req.body;
-   console.log("Editing item: ", itemId, " to be ", item);
+   console.log("Editing entry: ", itemId, " to be ", item);
 
    db.entries.update({ id: itemId }, item);
 
@@ -61,7 +72,7 @@ server.put("/api/:id", (req, res) => {
 // delete item from list
 server.delete("/api/:id", (req, res) => {
    const itemId = req.params.id;
-   console.log("Delete item with id: ", itemId);
+   console.log("Delete entry with id: ", itemId);
 
    db.entries.remove({ id: itemId });
 

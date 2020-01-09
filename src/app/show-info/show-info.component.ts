@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Entries } from "../entries";
-import { TodoListComponent } from "../todo-list/todo-list.component";
 import { DatePipe } from '@angular/common';
 import { LoadListsService } from "../load-lists.service";
 
@@ -29,9 +28,10 @@ export class ShowInfoComponent implements OnInit {
 
     let data = date.split("/");
     date = data[1] + "/" + data[0] + "/" + data[2];
-
   	this.dispInfo.date = date;
-  	this.listsService.updateEntry(this.dispInfo).subscribe();
+  	this.listsService.updateEntry(this.dispInfo).subscribe(f => {
+      //this.dispInfo = null;
+    });
   }
 
   changeState(entry: Entries, state: string) {

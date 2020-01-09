@@ -14,13 +14,17 @@ import { DashboardComponent } from "./dashboard/dashboard.component"
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ShowInfoComponent } from './show-info/show-info.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MessagesComponent } from './messages/messages.component';
+import { EntryFilterComponent } from './entry-filter/entry-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
     ShowInfoComponent,
-    DashboardComponent
+    DashboardComponent,
+    MessagesComponent,
+    EntryFilterComponent
   ],
   imports: [
     BrowserModule,

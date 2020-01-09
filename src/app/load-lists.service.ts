@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 
 import { Observable , of } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
+import { MessageService } from "./message.service";
 
 @Injectable({
   providedIn: 'root'
@@ -104,6 +105,16 @@ export class LoadListsService {
   	window.location.reload();
   }
 
+  searchEntry(term: string): Observable<Entries[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.http.get<Entries[]>(`${this.listsUrl}/search/${term}`).pipe(
+      tap(_ => console.log(`Searching entries matching "${term}"`)),
+      catchError(this.handleError<Entries[]>('searchEntry', []))
+    );
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -112,14 +123,18 @@ export class LoadListsService {
   }
 
   updateEntry (entry: Entries): Observable<Entries> {
+    this.messageService.add("Entry Saved");
     return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
-      tap(_ => console.log("Entry updated")),
+      tap(_ => {
+        console.log("Entry updated");
+      }),
       catchError(this.handleError<any>("updateEntry"))
     );
   }
 
   constructor(
     private http: HttpClient,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 }

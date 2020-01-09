@@ -10,7 +10,6 @@ With this ToDo-List you can write down and save things and tasks you have to fin
 `Deutsch`
 Mit der ToDo-List kann man sich Dinge einspeichern die man noch erledigen muss, diese können außerdem als erledigt oder wichtig markiert werden. Alle Aufgaben werden mit einem Enddatum belegt, falls ein Eintrag sich diesem Datum nähert wird er automatisch als dringend markiert. Außerdem werden im Dashboard die drei wichtigsten Aufgaben, damit man sie nicht vergisst, angezeigt und hervorgehoben.
 
-## Usage
+## Usage and Dependencies
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-No further prerequisites needed.
+Please run `npm install -g @angular/cli` globaly and `npm install diskdb` inside the `/restApi` directory to install the needed dependencies.
