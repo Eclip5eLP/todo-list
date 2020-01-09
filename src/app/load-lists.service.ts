@@ -10,14 +10,14 @@ import { catchError, map, tap } from "rxjs/operators";
   providedIn: 'root'
 })
 export class LoadListsService {
-  private listsUrl = "api/lists";
+  //private listsUrl = "api/lists";
+  private listsUrl = "http://localhost:4200/api";
 
   httpOptions = {
   	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   getLists(): Observable<Entries[]> {
-  	//return this.serverGetLists();
   	return this.http.get<Entries[]>(this.listsUrl)
 	  	.pipe(map(response => { return this.validateStates(response); }));
   }
@@ -118,5 +118,8 @@ export class LoadListsService {
     };
   }
 
-  constructor(private http: HttpClient, public datepipe: DatePipe) { }
+  constructor(
+    private http: HttpClient,
+    public datepipe: DatePipe
+  ) { }
 }

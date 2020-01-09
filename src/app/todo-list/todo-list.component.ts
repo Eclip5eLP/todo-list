@@ -40,7 +40,7 @@ export class TodoListComponent implements OnInit {
   	name = name.trim();
   	if (!name) { console.log("Name cannot be empty"); return; }
 	let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: 0};
-  	this.getListsService.addEntry({name} as Entries)
+  	this.getListsService.addEntry(entry as Entries)
   	  .subscribe(entry => {
   	  	this.lists.push(entry);
   	  });
