@@ -1,0 +1,12 @@
+<div class="info" *ngIf="dispInfo != null">
+	<h3>Edit Entry</h3>
+	<label class="input">Title: <input [(ngModel)]="dispInfo.name" placeholder="Title"></label><br>
+	<label class="input">Info: <input [(ngModel)]="dispInfo.info" placeholder="Description"></label><br>
+	<mat-form-field>
+		<input [value]="dispInfo.date" matInput [matDatepicker]="Datepicker" placeholder="Choose a date" #matDate>
+		<mat-datepicker-toggle matSuffix [for]="Datepicker"></mat-datepicker-toggle>
+		<mat-datepicker #Datepicker></mat-datepicker>
+	</mat-form-field><br>
+	<button (click)="changeState(dispInfo, 'important');" class="btn">Is Important</button><br>
+	<button (click)="save(matDate.value);" class="btn">Save</button>
+</div>
