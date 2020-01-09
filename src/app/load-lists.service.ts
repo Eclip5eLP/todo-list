@@ -121,7 +121,7 @@ export class LoadListsService {
       return of(result as T);
     };
   }
-
+  
   updateEntry (entry: Entries): Observable<Entries> {
     this.messageService.add("Entry Saved");
     return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
