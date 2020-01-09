@@ -19,10 +19,17 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker';
 export class ShowInfoComponent implements OnInit {
   @Input() dispInfo: Entries;
 
-  constructor(private listsService: LoadListsService) { }
+  constructor(
+    private listsService: LoadListsService,
+    private datepipe: DatePipe
+  ) { }
 
   save(date: string): void {
   	if (!date) { console.log("Cannot Save invalid date"); return; }
+
+    let data = date.split("/");
+    date = data[1] + "/" + data[0] + "/" + data[2];
+
   	this.dispInfo.date = date;
   	this.listsService.updateEntry(this.dispInfo).subscribe();
   }

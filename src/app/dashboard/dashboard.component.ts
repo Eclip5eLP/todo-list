@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showInfo(entry: Entries): void {
-	this.dispInfo = entry;
+	  this.dispInfo = entry;
   }
 
   delete(entry: Entries): void {
@@ -50,8 +50,12 @@ export class DashboardComponent implements OnInit {
   	this.getListsService.getLists()
   		.subscribe(lists => {
   			this.tasks = lists.sort((a,b) => {
-  				return new Date(b.date).getTime() - new Date(a.date).getTime();
+  			  return new Date(b.date).getTime() - new Date(a.date).getTime();
   			});
+        this.tasks = this.tasks.reverse();
+        for (let i = 0; i < this.tasks.length; i++) {
+          this.tasks[i].dispdate = this.datepipe.transform(this.tasks[i].date, 'dd/MM/yyyy');
+        }
   		}
   	);
   }

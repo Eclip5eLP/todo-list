@@ -5,7 +5,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { InMemoryDataService } from "./in-memory-data.service";
 
 import { DatePipe } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
@@ -28,9 +27,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,

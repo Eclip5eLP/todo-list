@@ -10,14 +10,14 @@ import { catchError, map, tap } from "rxjs/operators";
   providedIn: 'root'
 })
 export class LoadListsService {
-  private listsUrl = "api/lists";
+  //private listsUrl = "api/lists";
+  private listsUrl = "http://localhost:4200/api";
 
   httpOptions = {
   	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   getLists(): Observable<Entries[]> {
-  	//return this.serverGetLists();
   	return this.http.get<Entries[]>(this.listsUrl)
 	  	.pipe(map(response => { return this.validateStates(response); }));
   }
@@ -33,7 +33,7 @@ export class LoadListsService {
   		if (lists[i].date === "?" && lists[i].state != "important" && lists[i].state != "done") {
   			lists[i].state = "todo";
   		} else if (lists[i].state != "important" && lists[i].state != "done") {
-	  		let data = this.datepipe.transform(lists[i].date, 'MM/dd/yyyy').split("/");
+	  		let data = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy').split("/");
 	  		let day = +data[0];
 	  		let month = +data[1];
 	  		let year = +data[2];
@@ -87,21 +87,14 @@ export class LoadListsService {
   	);
   }
 
-  updateEntry (entry: Entries): Observable<Entries> {
-  	return this.http.put(this.listsUrl, entry, this.httpOptions).pipe(
-  	  tap(_ => console.log("Entry updated")),
-  	  catchError(this.handleError<any>("updateEntry"))
-  	);
-  }
-
   changeState (entry: Entries): Observable<Entries> {
   	if (entry.state != "done") {
-		entry.state = "done";
-	} else if (entry.state == "done") {
-		//TODO: Check for State
-		entry.state = "todo";
-	}
-	return this.http.put(this.listsUrl, entry, this.httpOptions).pipe(
+		  entry.state = "done";
+	  } else if (entry.state == "done") {
+		  //TODO: Check for State
+		  entry.state = "todo";
+	  }
+	  return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
   	  tap(_ => console.log("State updated")),
   	  catchError(this.handleError<any>("changeState"))
   	);
@@ -118,5 +111,15 @@ export class LoadListsService {
     };
   }
 
-  constructor(private http: HttpClient, public datepipe: DatePipe) { }
+  updateEntry (entry: Entries): Observable<Entries> {
+    return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
+      tap(_ => console.log("Entry updated")),
+      catchError(this.handleError<any>("updateEntry"))
+    );
+  }
+
+  constructor(
+    private http: HttpClient,
+    private datepipe: DatePipe
+  ) { }
 }
