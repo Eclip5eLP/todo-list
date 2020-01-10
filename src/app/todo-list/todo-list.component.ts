@@ -40,11 +40,15 @@ export class TodoListComponent implements OnInit {
   	this.getListsService.getLists().subscribe(lists => {
       this.lists = lists;
       for (let i = 0; i < lists.length; i++) {
+<<<<<<< HEAD
         if (lists[i].date === "?") {
           lists[i].dispdate = "?";
         } else {
           this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
         }
+=======
+        this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+>>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3
       }
     });
   }

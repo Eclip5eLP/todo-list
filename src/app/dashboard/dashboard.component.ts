@@ -34,7 +34,11 @@ export class DashboardComponent implements OnInit {
   }
 
   changeState(entry: Entries): void {
+<<<<<<< HEAD
   	this.getListsService.changeState(entry).subscribe(this.refresh());
+=======
+  	this.getListsService.changeState(entry).subscribe();
+>>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3
   }
 
   showInfo(entry: Entries): void {
@@ -46,10 +50,13 @@ export class DashboardComponent implements OnInit {
   	this.getListsService.removeEntry(entry).subscribe();
   }
 
+<<<<<<< HEAD
   refresh(): void {
     window.location.reload();
   }
 
+=======
+>>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3
   getLists(): void {
   	this.getListsService.getLists()
   		.subscribe(lists => {
@@ -58,6 +65,7 @@ export class DashboardComponent implements OnInit {
   			});
         this.tasks = this.tasks.reverse();
         for (let i = 0; i < this.tasks.length; i++) {
+<<<<<<< HEAD
           if (this.tasks[i].date === "?") {
             this.tasks[i].dispdate = "?";
           } else {
@@ -71,6 +79,10 @@ export class DashboardComponent implements OnInit {
           }
         }
         this.tasks = nt;
+=======
+          this.tasks[i].dispdate = this.datepipe.transform(this.tasks[i].date, 'dd/MM/yyyy');
+        }
+>>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3
   		}
   	);
   }
