@@ -13,7 +13,7 @@ import { TodoListComponent } from "../todo-list/todo-list.component";
   styleUrls: [ './entry-filter.component.css' ]
 })
 export class EntryFilterComponent implements OnInit {
-  lists$: Observable<Entries[]>;
+  //lists$: Observable<Entries[]>;
   private searchTerms = new Subject<string>();
   @Input() lists$: Observable<Entries[]>;
   @Output() change = new EventEmitter();
