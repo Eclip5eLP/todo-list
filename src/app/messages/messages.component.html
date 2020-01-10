@@ -1,0 +1,7 @@
+<div *ngIf="messageService.messages.length">
+	<div *ngFor="let message of messageService.messages; let i = index">
+		<div class="message" id="msg-id-{{message.id}}" [ngStyle]="{'bottom': '' + (25 + (80 * i)) + 'px'}" (click)="messageService.clear(message.id)">
+			{{message.msg}}
+		</div>
+	</div>
+</div>
