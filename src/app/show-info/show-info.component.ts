@@ -29,7 +29,6 @@ export class ShowInfoComponent implements OnInit {
 
     let data = date.split("/");
     date = data[1] + "/" + data[0] + "/" + data[2];
-
   	this.dispInfo.date = date;
   	this.listsService.updateEntry(this.dispInfo).subscribe();
   }

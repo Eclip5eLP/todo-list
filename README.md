@@ -19,4 +19,3 @@ Please run `npm install -g @angular/cli` globaly and `npm install diskdb` inside
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 No further prerequisites needed.
->>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3

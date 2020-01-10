@@ -27,7 +27,7 @@ export class TodoListComponent implements OnInit {
   genId(lists: Entries[]): number {
     return lists.length > 0 ? Math.max(...lists.map(entry => entry.id)) + 1 : 11;
   }
-
+  
   changeState(entry: Entries): void {
   	this.getListsService.changeState(entry).subscribe();
   }
@@ -40,15 +40,7 @@ export class TodoListComponent implements OnInit {
   	this.getListsService.getLists().subscribe(lists => {
       this.lists = lists;
       for (let i = 0; i < lists.length; i++) {
-<<<<<<< HEAD
-        if (lists[i].date === "?") {
-          lists[i].dispdate = "?";
-        } else {
-          this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
-        }
-=======
         this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
->>>>>>> 7c33fbd1116af133119a80fe9254e56d3023f6f3
       }
     });
   }
@@ -56,7 +48,7 @@ export class TodoListComponent implements OnInit {
   add(name: string): void {
   	name = name.trim();
   	if (!name) { console.log("Name cannot be empty"); return; }
-	let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: this.genId(this.lists)};
+	  let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: this.genId(this.lists)};
   	this.getListsService.addEntry(entry as Entries)
   	  .subscribe(entry => {
   	  	this.lists.push(entry);
