@@ -33,7 +33,7 @@ export class LoadListsService {
   		if (lists[i].date === "?" && lists[i].state != "important" && lists[i].state != "done") {
   			lists[i].state = "todo";
   		} else if (lists[i].state != "important" && lists[i].state != "done") {
-	  		let data = this.datepipe.transform(lists[i].date, 'MM/dd/yyyy').split("/");
+	  		let data = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy').split("/");
 	  		let day = +data[0];
 	  		let month = +data[1];
 	  		let year = +data[2];
@@ -87,21 +87,14 @@ export class LoadListsService {
   	);
   }
 
-  updateEntry (entry: Entries): Observable<Entries> {
-  	return this.http.put(this.listsUrl, entry, this.httpOptions).pipe(
-  	  tap(_ => console.log("Entry updated")),
-  	  catchError(this.handleError<any>("updateEntry"))
-  	);
-  }
-
   changeState (entry: Entries): Observable<Entries> {
   	if (entry.state != "done") {
-		entry.state = "done";
-	} else if (entry.state == "done") {
-		//TODO: Check for State
-		entry.state = "todo";
-	}
-	return this.http.put(this.listsUrl, entry, this.httpOptions).pipe(
+		  entry.state = "done";
+	  } else if (entry.state == "done") {
+		  //TODO: Check for State
+		  entry.state = "todo";
+	  }
+	  return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
   	  tap(_ => console.log("State updated")),
   	  catchError(this.handleError<any>("changeState"))
   	);
@@ -118,8 +111,15 @@ export class LoadListsService {
     };
   }
 
+  updateEntry (entry: Entries): Observable<Entries> {
+    return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
+      tap(_ => console.log("Entry updated")),
+      catchError(this.handleError<any>("updateEntry"))
+    );
+  }
+
   constructor(
     private http: HttpClient,
-    public datepipe: DatePipe
+    private datepipe: DatePipe
   ) { }
 }

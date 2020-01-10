@@ -24,22 +24,35 @@ export class TodoListComponent implements OnInit {
   	private datepipe: DatePipe
   ) { }
 
+  genId(lists: Entries[]): number {
+    return lists.length > 0 ? Math.max(...lists.map(entry => entry.id)) + 1 : 11;
+  }
+
   changeState(entry: Entries): void {
   	this.getListsService.changeState(entry).subscribe();
   }
 
   showInfo(entry: Entries): void {
-	this.dispInfo = entry;
+	  this.dispInfo = entry;
   }
 
   getLists(): void {
-  	this.getListsService.getLists().subscribe(lists => this.lists = lists);
+  	this.getListsService.getLists().subscribe(lists => {
+      this.lists = lists;
+      for (let i = 0; i < lists.length; i++) {
+        if (lists[i].date === "?") {
+          lists[i].dispdate = "?";
+        } else {
+          this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+        }
+      }
+    });
   }
 
   add(name: string): void {
   	name = name.trim();
   	if (!name) { console.log("Name cannot be empty"); return; }
-	let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: 0};
+	let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: this.genId(this.lists)};
   	this.getListsService.addEntry(entry as Entries)
   	  .subscribe(entry => {
   	  	this.lists.push(entry);

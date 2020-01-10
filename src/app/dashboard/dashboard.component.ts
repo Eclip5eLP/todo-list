@@ -34,11 +34,11 @@ export class DashboardComponent implements OnInit {
   }
 
   changeState(entry: Entries): void {
-  	this.getListsService.changeState(entry).subscribe();
+  	this.getListsService.changeState(entry).subscribe(this.refresh());
   }
 
   showInfo(entry: Entries): void {
-	this.dispInfo = entry;
+	  this.dispInfo = entry;
   }
 
   delete(entry: Entries): void {
@@ -46,12 +46,31 @@ export class DashboardComponent implements OnInit {
   	this.getListsService.removeEntry(entry).subscribe();
   }
 
+  refresh(): void {
+    window.location.reload();
+  }
+
   getLists(): void {
   	this.getListsService.getLists()
   		.subscribe(lists => {
   			this.tasks = lists.sort((a,b) => {
-  				return new Date(b.date).getTime() - new Date(a.date).getTime();
+  			  return new Date(b.date).getTime() - new Date(a.date).getTime();
   			});
+        this.tasks = this.tasks.reverse();
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (this.tasks[i].date === "?") {
+            this.tasks[i].dispdate = "?";
+          } else {
+            this.tasks[i].dispdate = this.datepipe.transform(this.tasks[i].date, 'dd/MM/yyyy');
+          }
+        }
+        let nt = [];
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (this.tasks[i].date !== "?" && this.tasks[i].state !== "done") {
+            nt[nt.length] = this.tasks[i];
+          }
+        }
+        this.tasks = nt;
   		}
   	);
   }

@@ -4,4 +4,5 @@ export class Entries {
   id: number;
   info: string;
   date: string;
+  dispdate: string;
 }
