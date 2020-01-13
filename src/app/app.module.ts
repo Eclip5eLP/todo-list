@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, enableProdMode } from '@angular/core';
 import { FormsModule } from "@angular/forms"
 import { HttpClientModule } from "@angular/common/http";
 import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
@@ -45,6 +45,6 @@ import { EntryFilterComponent } from './entry-filter/entry-filter.component';
     BrowserAnimationsModule
   ],
   providers: [ MatDatepickerModule, DatePipe ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -21,7 +21,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 export class TodoListComponent implements OnInit {
   dispInfo = null;
   lists: any;
-  lists$: Observable<Entries[]>;
+  lists$: any;
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
 
@@ -31,19 +31,10 @@ export class TodoListComponent implements OnInit {
   ) { }
 
   search(term: string): void {
-  	let eMainList: HTMLElement = document.getElementById("mainList");
-  	let eFilterList: HTMLElement = document.getElementById("filterList");
-  	let mknEntry: HTMLElement = document.getElementById("mkNewEntry");
   	if (term == "") {
   		this.showFilter = false;
-  		eMainList.setAttribute("style", "visibility:visible;");
-  		eFilterList.setAttribute("style", "visibility:hidden;");
-  		mknEntry.setAttribute("style", "visibility:visible;");
   	} else {
   		this.showFilter = true;
-  		eMainList.setAttribute("style", "visibility:hidden;");
-  		eFilterList.setAttribute("style", "visibility:visible;");
-  		mknEntry.setAttribute("style", "visibility:hidden;");
   	}
     this.searchTerms.next(term);
 
@@ -69,7 +60,11 @@ export class TodoListComponent implements OnInit {
   	this.getListsService.getLists().subscribe(lists => {
       this.lists = lists;
       for (let i = 0; i < lists.length; i++) {
-        this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+      	if (this.lists[i].date === "?") {
+      		this.lists[i].dispdate = "?";
+      	} else {
+        	this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+      	}
       }
     });
   }
@@ -92,10 +87,12 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
   	this.getLists();
 
-  	this.lists$ = this.searchTerms.pipe(
+  	this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((term: string) => this.getListsService.searchEntry(term)),
-    );
+    ).subscribe(list => {
+    	this.lists$ = list;
+    });
   }
 }

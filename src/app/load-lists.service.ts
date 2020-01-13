@@ -111,7 +111,8 @@ export class LoadListsService {
     }
     return this.http.get<Entries[]>(`${this.listsUrl}/search/${term}`).pipe(
       tap(_ => console.log(`Searching entries matching "${term}"`)),
-      catchError(this.handleError<Entries[]>('searchEntry', []))
+      catchError(this.handleError<Entries[]>('searchEntry', [])),
+      map(response => { return this.validateStates(response); })
     );
   }
 
