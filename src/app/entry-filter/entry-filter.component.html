@@ -4,7 +4,7 @@
   	<input #searchBox id="search-box" (input)="search(searchBox.value)">
 
   	<ul class="search-result">
-    	<li *ngFor="let entry of lists$ | async" (click)="showInfo(entry);">
+    	<li *ngFor="let entry of lists$ | async">
 			{{entry.name}}
     	</li>
   	</ul>

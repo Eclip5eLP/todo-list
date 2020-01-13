@@ -5,7 +5,6 @@ import {
  } from 'rxjs/operators';
 import { Entries } from '../entries';
 import { LoadListsService } from "../load-lists.service";
-import { TodoListComponent } from "../todo-list/todo-list.component";
 
 @Component({
   selector: 'app-entry-filter',
@@ -13,30 +12,15 @@ import { TodoListComponent } from "../todo-list/todo-list.component";
   styleUrls: [ './entry-filter.component.css' ]
 })
 export class EntryFilterComponent implements OnInit {
-  //lists$: Observable<Entries[]>;
+  lists$: Observable<Entries[]>;
   private searchTerms = new Subject<string>();
-  @Input() lists$: Observable<Entries[]>;
-  @Output() change = new EventEmitter();
 
   constructor(
-  	private getListsService: LoadListsService,
-  	private todoListComponent: TodoListComponent
+  	private getListsService: LoadListsService
   ) {}
 
   search(term: string): void {
     this.searchTerms.next(term);
-    var inputValue = (<HTMLInputElement>document.getElementById("search-box")).value;
-	if (inputValue == "") {
-	  this.todoListComponent.showFiltered = false;
-	  this.change.emit(this.lists$);
-	} else {
-	  this.todoListComponent.showFiltered = true;
-	  this.change.emit(this.lists$);
-	}
-  }
-
-  showInfo(entry: Entries): void {
-	this.todoListComponent.dispInfo = entry;
   }
 
   ngOnInit(): void {
@@ -45,6 +29,5 @@ export class EntryFilterComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((term: string) => this.getListsService.searchEntry(term)),
     );
-    this.todoListComponent.lists$ = this.lists$;
   }
 }

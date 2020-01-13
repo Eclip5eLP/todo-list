@@ -5,6 +5,8 @@ import { LoadListsService } from "../load-lists.service";
 import { DatePipe } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
+import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-list',
@@ -18,26 +20,38 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker';
 })
 export class TodoListComponent implements OnInit {
   dispInfo = null;
-  lists: Entries[];
+  lists: any;
   lists$: Observable<Entries[]>;
-  showFiltered: boolean;
+  private searchTerms = new Subject<string>();
+  showFilter: boolean = false;
 
   constructor(
   	private getListsService: LoadListsService,
   	private datepipe: DatePipe
   ) { }
 
+  search(term: string): void {
+  	let eMainList: HTMLElement = document.getElementById("mainList");
+  	let eFilterList: HTMLElement = document.getElementById("filterList");
+  	let mknEntry: HTMLElement = document.getElementById("mkNewEntry");
+  	if (term == "") {
+  		this.showFilter = false;
+  		eMainList.setAttribute("style", "visibility:visible;");
+  		eFilterList.setAttribute("style", "visibility:hidden;");
+  		mknEntry.setAttribute("style", "visibility:visible;");
+  	} else {
+  		this.showFilter = true;
+  		eMainList.setAttribute("style", "visibility:hidden;");
+  		eFilterList.setAttribute("style", "visibility:visible;");
+  		mknEntry.setAttribute("style", "visibility:hidden;");
+  	}
+    this.searchTerms.next(term);
+
+  }
+
   isArray(arr) { return Array.isArray(arr); }
   isObject(obj) { if (obj instanceof Object) return true; else return false; }
   isSubject(sub) { if (sub instanceof Subject) return true; else return false; }
-
-  isFilter(): boolean {
-    return this.showFiltered;
-  }
-
-  filterChange(event) {
-    this.lists$ = event;
-  }
 
   genId(lists: Entries[]): number {
     return lists.length > 0 ? Math.max(...lists.map(entry => entry.id)) + 1 : 11;
@@ -77,5 +91,11 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
   	this.getLists();
+
+  	this.lists$ = this.searchTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.getListsService.searchEntry(term)),
+    );
   }
 }
