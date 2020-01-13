@@ -31,19 +31,10 @@ export class TodoListComponent implements OnInit {
   ) { }
 
   search(term: string): void {
-  	let eMainList: HTMLElement = document.getElementById("mainList");
-  	let eFilterList: HTMLElement = document.getElementById("filterList");
-  	let mknEntry: HTMLElement = document.getElementById("mkNewEntry");
   	if (term == "") {
   		this.showFilter = false;
-  		eMainList.setAttribute("style", "visibility:visible;");
-  		eFilterList.setAttribute("style", "visibility:hidden;");
-  		mknEntry.setAttribute("style", "visibility:visible;");
   	} else {
   		this.showFilter = true;
-  		eMainList.setAttribute("style", "visibility:hidden;");
-  		eFilterList.setAttribute("style", "visibility:visible;");
-  		mknEntry.setAttribute("style", "visibility:hidden;");
   	}
     this.searchTerms.next(term);
 
