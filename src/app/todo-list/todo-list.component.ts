@@ -21,7 +21,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 export class TodoListComponent implements OnInit {
   dispInfo = null;
   lists: any;
-  lists$: Observable<Entries[]>;
+  lists$: any;
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
 
@@ -60,7 +60,11 @@ export class TodoListComponent implements OnInit {
   	this.getListsService.getLists().subscribe(lists => {
       this.lists = lists;
       for (let i = 0; i < lists.length; i++) {
-        this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+      	if (this.lists[i].date === "?") {
+      		this.lists[i].dispdate = "?";
+      	} else {
+        	this.lists[i].dispdate = this.datepipe.transform(lists[i].date, 'dd/MM/yyyy');
+      	}
       }
     });
   }
@@ -83,10 +87,12 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
   	this.getLists();
 
-  	this.lists$ = this.searchTerms.pipe(
+  	this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((term: string) => this.getListsService.searchEntry(term)),
-    );
+    ).subscribe(list => {
+    	this.lists$ = list;
+    });
   }
 }

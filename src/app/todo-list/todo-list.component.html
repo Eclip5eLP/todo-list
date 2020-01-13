@@ -4,7 +4,7 @@
 	<button routerLink="/lists" class="selected">List</button>
 </nav>
 <div class="container">
-	<div>
+	<div *ngIf="!showFilter; else filteredList">
 		<div *ngIf="lists; else noLists">
 			<div class="list" id="mainList">
 				ToDo List
@@ -23,19 +23,6 @@
 				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
 				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
 			</div>
-
-			<div class="list" id="filterList">
-				ToDo List
-				<ul class="sub" *ngFor="let entry of lists$ | async; let i = index">
-					<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
-						{{entry.name}}
-					</li>
-					<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
-					<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
-					<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
-					<div class="spacer" style="clear: both;"></div>
-				</ul>
-			</div>
 		</div>
 	</div>
 </div>
@@ -46,19 +33,23 @@
 	</div>
 </ng-template>
 <ng-template #filteredList>
-	
+	<div class="list" id="filterList">
+		ToDo List
+		<ul class="sub" *ngFor="let entry of lists$; let i = index">
+			<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
+				{{entry.name}}
+			</li>
+			<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
+			<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
+			<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
+			<div class="spacer" style="clear: both;"></div>
+		</ul>
+	</div>
 </ng-template>
 
 <app-show-info [dispInfo]="dispInfo"></app-show-info>
 
 <div class="search" id="search-component" align="center">
   	<h4><label for="search-box">Search Entry</label></h4>
-
   	<input #searchBox id="search-box" (input)="search(searchBox.value)">
-
-  	<ul class="search-result">
-    	<li *ngFor="let entry of lists$ | async">
-			{{entry.name}}
-    	</li>
-  	</ul>
 </div>
