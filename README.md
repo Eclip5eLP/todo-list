@@ -12,4 +12,4 @@ Mit der ToDo-List kann man sich Dinge einspeichern die man noch erledigen muss, 
 
 ## Usage and Dependencies
 
-Please run `npm install -g @angular/cli` globaly and `npm install diskdb` inside the `/restApi` directory to install the needed dependencies.
+Please run `npm install -g @angular/cli` globaly and `npm install express mongodb body-parser --save` inside the `/restApi` directory to install the needed dependencies.

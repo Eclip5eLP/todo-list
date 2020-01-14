@@ -12,5 +12,5 @@ Mit der ToDo-List kann man sich Dinge einspeichern die man noch erledigen muss, 
 
 ## Usage
 
-Please run `npm install diskdb` inside this directory to install the needed dependencies.
+Please run `npm install express mongodb body-parser --save` inside this directory to install the needed dependencies.
 No further prerequisites needed.

@@ -1,85 +1,81 @@
-const express = require('express');
-const server = express();
-
-const body_parser = require('body-parser');
+const express = require("express");
+const bodyparser = require("body-parser");
+const mongo = require("mongodb").MongoClient;
+const mongoose = require("mongoose");
+const objid = require("mongodb").ObjectID;
 
 const port = 4000;
+const dbname = "todo-list";
+const uri = "mongodb://localhost/api";
 
-const db = require('diskdb');
-db.connect('./data', ['entries']);
+var app = express();
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+var db, coll;
 
-if (!db.entries.find().length) {
-   const entry = { name: "null", info: "null", id: "0", state: "todo", date: "?" };
-   db.entries.save(entry);
-}
-console.log(db.entries.find());
-
-// parse JSON (application/json content-type)
-server.use(body_parser.json());
-
-server.get("/", (req, res) => {
-   res.sendFile(__dirname + '/index.html');
+app.get('/', (req, res) => {
+   res.send("API currently Online!");
 });
 
-server.get("/api/search/:name", (req, res) => {
-   const itemName = req.params.name;
-   const items = db.entries.find({ name: itemName });
-
-   if (items.length) {
-      res.json(items);
-   } else {
-      res.json([])
-   }
+//Get all
+app.get("/api", (req, resp) => {
+   coll.find({}).toArray((err, res) => {
+      if (err) return resp.status(500).send(err);
+      if (res.length) {
+         resp.send(res);
+      } else {
+         console.log("List is empty");
+      }
+   });
 });
 
-server.get("/api", (req, res) => {
-   res.json(db.entries.find());
+//Get ID
+app.get("/api/:id", (req, resp) => {
+   var itemID = req.params.id;
+   coll.find({ id: parseInt(itemID) }).toArray((err, res) => {
+      if (err) return resp.status(500).send(err);
+      resp.send(res);
+   });
 });
 
-server.get("/api/:id", (req, res) => {
-   const itemId = req.params.id;
-   const items = db.entries.find({ id: itemId });
-
-   if (items.length) {
-      res.json(items);
-   } else {
-      res.json({ message: `entry ${itemId} doesn't exist` })
-   }
+//Add Item
+app.post("/api", (req, resp) => {
+   var item = req.body;
+   console.log("Adding new Entry: ", item);
+   coll.insertOne(item, (err, res) => {
+      if (err) return resp.status(500).send(err);
+      resp.send(res.res);
+   });
 });
 
-server.post("/api", (req, res) => {
-   const item = req.body;
-   console.log('Adding new entry: ', item);
+//Update an ID
+app.put("/api/:id", (req, resp) => {
+   var itemID = req.params.id;
+   var item = req.body;
+   console.log("Updating Entry: ", itemID, " to be ", item);
 
-   // add new item to array
-   db.entries.save(item);
-
-   // return updated list
-   res.json(db.entries.find());
+   coll.updateOne({ id: parseInt(itemID) }, item);
 });
 
-// update an item
-server.put("/api/:id", (req, res) => {
-   const itemId = req.params.id;
-   const item = req.body;
-   console.log("Editing entry: ", itemId, " to be ", item);
-
-   db.entries.update({ id: itemId }, item);
-
-   res.json(db.entries.find());
+//Delete ID
+app.delete("/api/:id", (req, resp) => {
+   var itemID = req.params.id;
+   console.log("Deleting Entry: ", itemID);
+   coll.deleteOne({ id: parseInt(itemID) });
 });
 
-// delete item from list
-server.delete("/api/:id", (req, res) => {
-   const itemId = req.params.id;
-   console.log("Delete entry with id: ", itemId);
+app.listen(4000, () => {
+   mongo.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+   }, (err, client) => {
+      if(err) {
+         throw error;
+      }
 
-   db.entries.remove({ id: itemId });
-
-   res.json(db.entries.find());
-});
-
-
-server.listen(port, () => {
-   console.log(`Server listening at ${port}`);
+      db = client.db(dbname);
+      coll = db.collection("entries");
+      console.log("Connected to Database");
+      console.log("Server Running on port " + port);
+   });
 });
