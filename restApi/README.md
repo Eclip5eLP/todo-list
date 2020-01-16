@@ -18,7 +18,7 @@ No further prerequisites needed.
 ## API
 
 All valid API Calls
-
+```
 /                           Base
 /api                        Base
 /api/:id                    Get/Update/Remove Entry by ID
@@ -39,3 +39,4 @@ All valid API Calls
 
 /api/users                  Add Users
 /api/users/:id              Get/Remove User by ID
+```
