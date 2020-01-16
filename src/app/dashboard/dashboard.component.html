@@ -1,25 +1,35 @@
-<h1>Dashboard</h1>
-<nav>
-	<button routerLink="/dashboard" class="selected">Dashboard</button>
-	<button routerLink="/lists">List</button>
-</nav>
-<div class="list" *ngIf="tasks; else noLists">
-	<h3>Important/Urgent Tasks</h3>
-	<ul class="sub" *ngFor="let entry of tasks; let i = index">
-		<div *ngIf="i<3">
-			<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
-				{{entry.name}}
-			</li>
-			<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
-			<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
-			<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
-			<div class="spacer" style="clear: both;"></div>
-		</div>
-	</ul>
-	<app-show-info [dispInfo]="dispInfo"></app-show-info>
-</div>
-<ng-template #noLists>
-	<div class="list">
-		<h2>Loading Tasks...</h2>
+<div *ngIf="getListsService.user != null">
+	<h1>Dashboard</h1>
+	<nav>
+		<button routerLink="/dashboard" class="selected">Dashboard</button>
+		<span *ngFor="let list of lists; let i = index">
+			<button routerLink="/lists/{{list.id}}">{{list.name}}</button>
+		</span>
+	</nav>
+	<div class="list" *ngIf="tasks; else noLists">
+		<h3>Important/Urgent Tasks</h3>
+		Coming Soon...
+		<ul class="sub" *ngFor="let entry of tasks; let i = index">
+			<div *ngIf="i<3">
+				<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
+					{{entry.name}}
+				</li>
+				<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
+				<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
+				<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
+				<div class="spacer" style="clear: both;"></div>
+			</div>
+		</ul>
+		<app-show-info [dispInfo]="dispInfo"></app-show-info>
 	</div>
-</ng-template>
+	<div class="list" id="mkNewList">
+		<h2>Create new List</h2>
+		<label class="input">Title: <input #listTitle placeholder="Enter Title" value=""></label><br>
+		<button (click)="addList(listTitle.value); listTitle.value='';" class="btn">Create</button>
+	</div>
+	<ng-template #noLists>
+		<div class="list">
+			<h2>Loading Tasks...</h2>
+		</div>
+	</ng-template>
+</div>

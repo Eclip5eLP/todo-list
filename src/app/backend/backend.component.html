@@ -1,0 +1,56 @@
+<div *ngIf="getListsService.user != null">
+	<div *ngIf="isAdmin">
+		<h1>Administration</h1>
+		<nav>
+			<button routerLink="/admin" [ngClass]="tab == 'admin' ? 'selected': 'none'">Dashboard</button>
+			<button routerLink="/admin/users" [ngClass]="tab == 'users' ? 'selected': 'none'">Users</button>
+			<button routerLink="/admin/lists" [ngClass]="tab == 'lists' ? 'selected': 'none'">Lists</button>
+			<button routerLink="/admin/entries" [ngClass]="tab == 'entries' ? 'selected': 'none'">Entries</button>
+		</nav>
+		<div *ngIf="tab == 'admin'">
+			<div class="list">
+				<h2>Statistics</h2>
+				Statistics not available yet
+			</div>
+		</div>
+		<div *ngIf="tab == 'users'">
+			<div class="list">
+				<h2>User Management</h2>
+				<ul class="sub" *ngFor="let usr of USERS; let i = index">
+					<li>
+						{{usr.username}}
+					</li>
+					<div class="moreInfo" (click)="showInfo(usr);" title="Edit">?</div>
+					<button class="delete" title="Delete User" (click)="deleteUser(usr);" style="float: right" class="delete-btn">x</button>
+					<div class="spacer" style="clear: both;"></div>
+				</ul>
+			</div>
+		</div>
+		<div *ngIf="tab == 'lists'">
+			<div class="list">
+				<h2>List Management</h2>
+				<ul class="sub" *ngFor="let list of LISTS; let i = index">
+					<li>
+						{{list.name}}
+					</li>
+					<div class="moreInfo" (click)="showInfo(list);" title="Edit">?</div>
+					<button class="delete" title="Delete User" (click)="deleteUser(list);" style="float: right" class="delete-btn">x</button>
+					<div class="spacer" style="clear: both;"></div>
+				</ul>
+			</div>
+		</div>
+		<div *ngIf="tab == 'entries'">
+			<div class="list">
+				<h2>Entry Management</h2>
+				<ul class="sub" *ngFor="let entry of ENTRIES; let i = index">
+					<li>
+						{{entry.name}}
+					</li>
+					<div class="moreInfo" (click)="showInfo(entry);" title="Edit">?</div>
+					<button class="delete" title="Delete User" (click)="deleteUser(entry);" style="float: right" class="delete-btn">x</button>
+					<div class="spacer" style="clear: both;"></div>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

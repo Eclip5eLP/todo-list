@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Entries } from "../entries";
+import { Lists } from "../lists";
+import { Users } from "../users";
 import { Observable, Subject, of } from 'rxjs';
 import { LoadListsService } from "../load-lists.service";
 import { DatePipe } from '@angular/common';
@@ -24,6 +26,8 @@ export class TodoListComponent implements OnInit {
   lists$: any;
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
+  allEntries: any;
+  private allowView = false;
 
   constructor(
   	private getListsService: LoadListsService,
@@ -44,8 +48,8 @@ export class TodoListComponent implements OnInit {
   isObject(obj) { if (obj instanceof Object) return true; else return false; }
   isSubject(sub) { if (sub instanceof Subject) return true; else return false; }
 
-  genId(lists: Entries[]): number {
-    return lists.length > 0 ? Math.max(...lists.map(entry => entry.id)) + 1 : 11;
+  genId(entry: Entries[]): number {
+    return entry.length > 0 ? Math.max(...entry.map(entry => entry.id)) + 1 : 11;
   }
   
   changeState(entry: Entries): void {
@@ -57,7 +61,7 @@ export class TodoListComponent implements OnInit {
   }
 
   getLists(): void {
-  	this.getListsService.getLists().subscribe(lists => {
+  	this.getListsService.getEntries().subscribe(lists => {
       this.lists = lists;
       for (let i = 0; i < lists.length; i++) {
       	if (this.lists[i].date === "?") {
@@ -69,10 +73,25 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  ownsList(): void {
+    this.getListsService.listCheckOwner().subscribe(list => {
+      for (let i = 0; i < list[0].users.length; i++) {
+        if (list[0].users[i] == this.getListsService.user) this.allowView = true;
+      }
+    });
+  }
+
+  getAllEntries(): void {
+    this.getListsService.getAllEntries().subscribe(e => {
+      this.allEntries = e;
+    });
+  }
+
   add(name: string): void {
   	name = name.trim();
+    var idd = window.location.pathname.split("/").pop();
   	if (!name) { console.log("Name cannot be empty"); return; }
-	  let entry = {name: name, state: "todo", date: "?", info: "No Info yet", id: this.genId(this.lists)};
+	  let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, date: "?", info: "No Info yet", id: this.genId(this.allEntries), list: parseInt(idd)};
   	this.getListsService.addEntry(entry as Entries)
   	  .subscribe(entry => {
   	  	this.lists.push(entry);
@@ -86,6 +105,8 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
   	this.getLists();
+    this.getAllEntries();
+    this.ownsList();
 
   	this.searchTerms.pipe(
       debounceTime(300),

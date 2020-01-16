@@ -16,6 +16,8 @@ import { ShowInfoComponent } from './show-info/show-info.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessagesComponent } from './messages/messages.component';
 import { EntryFilterComponent } from './entry-filter/entry-filter.component';
+import { LoginComponent } from './login/login.component';
+import { BackendComponent } from './backend/backend.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { EntryFilterComponent } from './entry-filter/entry-filter.component';
     ShowInfoComponent,
     DashboardComponent,
     MessagesComponent,
-    EntryFilterComponent
+    EntryFilterComponent,
+    LoginComponent,
+    BackendComponent
   ],
   imports: [
     BrowserModule,
