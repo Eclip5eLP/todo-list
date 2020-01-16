@@ -22,6 +22,10 @@ app.get('/', (req, res) => {
    res.send("API currently Online!");
 });
 
+app.get('/api', (req, res) => {
+   res.send("API currently Online!");
+});
+
 //Check Login Success
 app.post("/api/login", (req, resp) => {
    var usr = req.body;
@@ -238,6 +242,7 @@ app.delete("/api/users/:id", (req, resp) => {
    users.deleteOne({ id: parseInt(id) });
 });
 
+//Start Server
 app.listen(4000, () => {
    mongo.connect(uri, {
       useNewUrlParser: true,
@@ -247,6 +252,7 @@ app.listen(4000, () => {
          throw error;
       }
 
+      //Get main Database with underlying Collections
       db = client.db(dbname);
       entries = db.collection("entries");
       users = db.collection("users");
@@ -255,3 +261,30 @@ app.listen(4000, () => {
       console.log("Server Running on port " + port);
    });
 });
+
+
+/*
+All valid API Calls
+
+/                           Base
+/api                        Base
+/api/:id                    Get/Update/Remove Entry by ID
+/api/u/:user                Get all Lists of User
+
+/api/login                  Login Request
+/api/login/key              Login Request via Key
+
+/api/entries                Get all Entries
+
+/api/lists                  Get all Lists
+/api/lists/e/:id            Get all Entries of List  (Entry)
+/api/lists/u/:id            Update Lists by ID       (Update)
+/api/lists/r/:id            Remove Lists by ID       (Remove)
+/api/lists/o/:id            Get Lists by ID          (Obtain)
+/api/lists/p/:id            Parse any received Data  (Parse)
+/api/lists/a/:id            Add Entry to List        (Add)
+
+/api/users                  Add Users
+/api/users/:id              Get/Remove User by ID
+
+*/

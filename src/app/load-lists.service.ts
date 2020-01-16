@@ -21,16 +21,19 @@ export class LoadListsService {
   	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  //Get all Lists of current User (null request if none)
   getLists(): Observable<Lists[]> {
     return this.http.get<Lists[]>(this.listsUrl + "/u/" + this.user);
     console.log(this.router.url);
   }
 
+  //Get all Lists
   getAllLists(): Observable<Lists[]> {
     return this.http.get<Lists[]>(this.listsUrl + "/lists");
     console.log(this.router.url);
   }
 
+  //Check if user has a specific Role
   hasRole(usr: Users, role: String): Boolean {
     if (usr == null || usr == undefined) return false;
     console.log("Check Role: " + usr.username + " = " + usr.roles + " ? " + role);
@@ -40,27 +43,31 @@ export class LoadListsService {
     return false;
   }
 
+  //Check if User is part of a specific List
   listCheckOwner(): Observable<Lists[]> {
     let idd = window.location.pathname.split("/").pop();
     return this.http.get<Lists[]>(this.listsUrl + "/lists/o/" + idd);
   }
 
+  //Get all Entries of current List
   getEntries(): Observable<Entries[]> {
-    let uri = this.router.url.replace(/lists/gi, "");
-    uri = uri.replace(/\/\//gi, "");
-    return this.http.get<Entries[]>(this.listsUrl + "/lists/e/" + uri)
+    let idd = window.location.pathname.split("/").pop();
+    return this.http.get<Entries[]>(this.listsUrl + "/lists/e/" + idd)
       .pipe(map(response => { return this.validateStates(response); }));
   }
 
+  //Get all Entries
   getAllEntries(): Observable<Entries[]> {
     return this.http.get<Entries[]>(this.listsUrl + "/entries")
       .pipe(map(response => { return this.validateStates(response); }));
   }
 
+  //Get all Users
   loadUsers(): Observable<Users[]> {
     return this.http.get<Users[]>(this.listsUrl + "/users");
   }
 
+  //Create a new User
   createUser(usr: Users): Observable<Users> {
     return this.http.post<Users>(this.listsUrl + "/users", usr, this.httpOptions).pipe(
       tap((newUser: Users) => { console.log("Created new User"); }),
@@ -68,12 +75,14 @@ export class LoadListsService {
     );
   }
 
+  //Send Login Request
   checkLogin(name: String, pass: String): Observable<any> {
     return this.http.post<any>(this.listsUrl + "/login", '{"name":"' + name + '", "pass":"' + pass + '"}', this.httpOptions).pipe(
       catchError(this.handleError<any>("checkLogin"))
     );
   }
 
+  //Send Login Request via Key
   checkLoginKey(name: String, key: String): Observable<Boolean> {
     let payload = JSON.parse('{"name":"' + name + '", "apikey":"' + key + '"}');
     return this.http.post<Boolean>(this.listsUrl + "/login/key", payload, this.httpOptions).pipe(
@@ -81,6 +90,8 @@ export class LoadListsService {
     );
   }
 
+  //*(Old)* Compares the dates of an Entry with the current Date
+  //        to apply special states to it.
   validateStates(lists: Entries[]): Entries[] {
 
     for (let i = 0; i < lists.length; i++) {
@@ -125,7 +136,8 @@ export class LoadListsService {
   	return lists;
   }
 
-  addEntry (entry: Entries): Observable<Entries> {
+  //Add an Entry to the current List
+  addEntry(entry: Entries): Observable<Entries> {
     let idd = window.location.pathname.split("/").pop();
   	return this.http.post<Entries>(this.listsUrl + "/lists/a/" + idd, entry, this.httpOptions).pipe(
   	  tap((newEntry: Entries) => { console.log("Added new Entry to List"); this.refresh(); }),
@@ -133,7 +145,8 @@ export class LoadListsService {
   	);
   }
 
-  removeEntry (entry: Entries | number): Observable<Entries> {
+  //Remove an Entry from the current List
+  removeEntry(entry: Entries | number): Observable<Entries> {
   	const id = typeof entry === "number" ? entry : entry.id;
   	const url = `${this.listsUrl}/${id}`;
 
@@ -143,17 +156,22 @@ export class LoadListsService {
   	);
   }
 
-  addList (list: Lists): Observable<Lists> {
+  //Create a new List for current User
+  addList(list: Lists): Observable<Lists> {
     return this.http.post<Lists>(this.listsUrl + "/lists", list, this.httpOptions).pipe(
       tap((newList: Lists) => { console.log("Created new List"); this.refresh(); }),
       catchError(this.handleError<Lists>("addList"))
     );
   }
 
+  //Refresh Browser Window
   refresh(): void {
   	window.location.reload();
   }
 
+  //Filter: Search any Entry in a List.
+  //        Currently not working.
+  //        (TODO: Add /api/search/:term to API)
   searchEntry(term: string): Observable<Entries[]> {
     if (!term.trim()) {
       return of([]);
@@ -165,6 +183,7 @@ export class LoadListsService {
     );
   }
 
+  //Error Handler
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -172,7 +191,8 @@ export class LoadListsService {
     };
   }
 
-  changeState (entry: Entries): Observable<Entries> {
+  //Change state of an Entry
+  changeState(entry: Entries): Observable<Entries> {
     if (entry.isDone) {
       entry.isDone = false;
       entry.state = "todo";
@@ -186,7 +206,8 @@ export class LoadListsService {
     );
   }
   
-  updateEntry (entry: Entries): Observable<Entries> {
+  //Update an Entry
+  updateEntry(entry: Entries): Observable<Entries> {
     this.messageService.add("Entry Saved");
     return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
       tap(_ => {
@@ -205,7 +226,7 @@ export class LoadListsService {
 }
 
 /*
-entries format:
+Entries format:
 id
 name
 info
@@ -214,12 +235,12 @@ isDone
 isImportant
 isUrgent
 
-lists format:
+Lists format:
 id
 name
 users
 
-users format:
+Users format:
 id
 username
 password
