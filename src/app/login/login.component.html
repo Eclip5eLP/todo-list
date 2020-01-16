@@ -1,0 +1,20 @@
+<div *ngIf="getListsService.user == null; else logoutTemplate">
+	<h1>Login</h1>
+	<div id="login_form" class="list"><br>
+		Username: <input type="text" [(ngModel)]="login_u" placeholder="Enter a Username"><br>
+		Password: <input type="password" [(ngModel)]="login_p" placeholder="Enter a Password"><br>
+		<button (click)="login();" class="btn">Login</button>
+	</div>
+
+	<h1>Register</h1>
+	<div id="register_form" class="list"><br>
+		Username: <input type="text" [(ngModel)]="register_u" placeholder="Enter a Username"><br>
+		Password: <input type="password" [(ngModel)]="register_p" placeholder="Enter a Password"><br>
+		<button (click)="register();" class="btn">Register</button>
+	</div>
+</div>
+<ng-template #logoutTemplate>
+	<div class="logout_div">
+		<button (click)="logout();" class="logout_btn">Logout</button>
+	</div>
+</ng-template>

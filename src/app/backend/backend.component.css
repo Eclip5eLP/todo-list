@@ -1,0 +1,176 @@
+.list {
+	width: 450px;
+	background-color: #f4f5f7;
+	border-radius: 5px;
+	color: black;
+	height: auto;
+	min-height: 100px;
+	font-weight: bold;
+	margin: 0 auto;
+	margin-top: 15px;
+	padding: 10px;
+}
+
+.list .sub {
+	list-style-type: none;
+	padding: 0;
+}
+
+.list .moreInfo {
+	float: right;
+	margin-top: -0.5em;
+	padding-top: 15px;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+
+.list .sub li {
+	position: relative;
+	cursor: pointer;
+	background-color: #DEDEDE;
+	padding: .3em 0;
+	height: 1.6em;
+	border-radius: 4px;
+	width: 90%;
+	float: left;
+}
+
+.list .sub li.done {
+	background-color: #70DB70;
+}
+
+.list .sub li.important {
+	background-color: #FF6666;
+}
+
+.list .sub li.urgent {
+	background-color: #FF944D;
+}
+
+.list .sub li.overdue {
+	background-color: #CC0000;
+}
+
+.input input:focus {
+	outline: none;
+}
+
+.input {
+	border: 1px solid black;
+	border-radius: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.input input {
+	border: none;
+	background: none;
+}
+
+.btn {
+	margin: 5px;
+	border: 1px solid black;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.delete-btn {
+	border-radius: 6px;
+	cursor: pointer;
+	border: 1px solid gray;
+}
+
+nav button {
+	width: 125px;
+	margin-left: 10px;
+	margin-right: 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: #E6E6E6;
+	color: #8C8C8C;
+	padding: 10px;
+	font-size: 1em;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+nav button.selected {
+	color: #00CCFF;
+}
+
+.search {
+	width: 450px;
+	background-color: #f4f5f7;
+	border-radius: 5px;
+	color: black;
+	height: auto;
+	min-height: 25px;
+	font-weight: bold;
+	margin: 0 auto;
+	margin-top: 15px;
+	padding: 10px;
+	position: absolute;
+	right: calc(50% + 275px);
+	top: 224px;
+}
+
+.search-result li {
+  	border-bottom: 1px solid gray;
+  	border-left: 1px solid gray;
+  	border-right: 1px solid gray;
+  	width: 195px;
+  	height: 16px;
+  	padding: 5px;
+  	background-color: white;
+  	cursor: pointer;
+  	list-style-type: none;
+}
+
+.search-result li:hover {
+  	background-color: #607D8B;
+}
+
+.search-result li a {
+  	color: #888;
+  	display: block;
+  	text-decoration: none;
+}
+
+.search-result li a:hover {
+  	color: white;
+}
+
+.search-result li a:active {
+  	color: white;
+}
+
+#search-box {
+  	width: 200px;
+  	height: 20px;
+}
+
+ul.search-result {
+  	margin-top: 0;
+  	padding-left: 0;
+}
+
+.list#mainList {
+	visibility: visible;
+}
+
+.logout_div {
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+}
+
+.logout_btn {
+	color: white;
+	cursor: pointer;
+	border: none;
+	background-color: none;
+	background-color: Transparent;
+    background-repeat: no-repeat;
+    outline: none;
+}

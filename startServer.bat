@@ -9,5 +9,6 @@ if exist "%temp%\nodeServer.bat" del /f /q "%temp%\nodeServer.bat"
 	echo cd %cd%\restApi\
 	echo node server.js
 ) > "%temp%\nodeServer.bat"
+start  "MongoDB Server" mongod
 start "REST API" "%temp%\nodeServer.bat"
 npm start

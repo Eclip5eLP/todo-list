@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public dateValue: Date = new Date();
   title = 'ToDo-List';
-  subtitle = "Test Environment";
+  subtitle = "Dev Environment";
 }

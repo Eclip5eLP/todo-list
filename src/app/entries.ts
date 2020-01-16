@@ -5,4 +5,8 @@ export class Entries {
   info: string;
   date: string;
   dispdate: string;
+  isDone: boolean;
+  isImportant: boolean;
+  isUrgent: boolean;
+  list: number;
 }

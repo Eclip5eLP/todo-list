@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Entries } from "../entries";
+import { Lists } from "../lists";
+import { Users } from "../users";
 import { LoadListsService } from "../load-lists.service";
 import { DatePipe } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
@@ -16,7 +18,7 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker';
   ]
 })
 export class DashboardComponent implements OnInit {
-  lists: Entries[];
+  lists: Lists[];
   tasks: Entries[];
   dispInfo = null;
 
@@ -27,6 +29,20 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
   	this.getLists();
+  }
+
+  genId(lists: Lists[]): number {
+    return lists.length > 0 ? Math.max(...lists.map(list => list.id)) + 1 : 11;
+  }
+
+  addList(name: string): void {
+    name = name.trim();
+    if (!name) { console.log("Name cannot be empty"); return; }
+    let list = {id: this.genId(this.lists), name: name, users:[this.getListsService.user]};
+    this.getListsService.addList(list as Lists)
+      .subscribe(list => {
+        this.lists.push(list);
+      });
   }
 
   private getTime(date?: Date) {
@@ -53,6 +69,7 @@ export class DashboardComponent implements OnInit {
   getLists(): void {
     this.getListsService.getLists()
       .subscribe(lists => {
+        /*
         this.tasks = lists.sort((a,b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
           return new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -72,6 +89,8 @@ export class DashboardComponent implements OnInit {
           }
         }
         this.tasks = nt;
+        */
+        this.lists = lists;
       }
     );
   }

@@ -1,14 +1,42 @@
-<h1>List</h1>
-<nav>
-	<button routerLink="/dashboard">Dashboard</button>
-	<button routerLink="/lists" class="selected">List</button>
-</nav>
-<div class="container">
-	<div *ngIf="!showFilter; else filteredList">
-		<div *ngIf="lists; else noLists">
-			<div class="list" id="mainList">
+<div *ngIf="getListsService.user != null">
+	<div *ngIf="allowView">
+		<h1>List</h1>
+		<nav>
+			<button routerLink="/dashboard">Dashboard</button>
+		</nav>
+		<div class="container">
+			<div *ngIf="!showFilter; else filteredList">
+				<div *ngIf="lists; else noLists">
+					<div class="list" id="mainList">
+						ToDo List
+						<ul class="sub" *ngFor="let entry of lists; let i = index">
+							<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
+								{{entry.name}}
+							</li>
+							<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
+							<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
+							<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
+							<div class="spacer" style="clear: both;"></div>
+						</ul>
+					</div>
+					<div class="list" id="mkNewEntry">
+						<h2>Add new entry</h2>
+						<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
+						<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<ng-template #noLists>
+			<div class="list">
+				<h2>Loading List...</h2>
+			</div>
+		</ng-template>
+		<ng-template #filteredList>
+			<div class="list" id="filterList">
 				ToDo List
-				<ul class="sub" *ngFor="let entry of lists; let i = index">
+				<ul class="sub" *ngFor="let entry of lists$; let i = index">
 					<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
 						{{entry.name}}
 					</li>
@@ -18,38 +46,13 @@
 					<div class="spacer" style="clear: both;"></div>
 				</ul>
 			</div>
-			<div class="list" id="mkNewEntry">
-				<h2>Add new entry</h2>
-				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
-				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
-			</div>
+		</ng-template>
+
+		<app-show-info [dispInfo]="dispInfo"></app-show-info>
+
+		<div class="search" id="search-component" align="center">
+		  	<h4><label for="search-box">Search Entry</label></h4>
+		  	<input #searchBox id="search-box" (input)="search(searchBox.value)">
 		</div>
 	</div>
-</div>
-
-<ng-template #noLists>
-	<div class="list">
-		<h2>Loading List...</h2>
-	</div>
-</ng-template>
-<ng-template #filteredList>
-	<div class="list" id="filterList">
-		ToDo List
-		<ul class="sub" *ngFor="let entry of lists$; let i = index">
-			<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
-				{{entry.name}}
-			</li>
-			<div class="moreInfo" (click)="showInfo(entry);" title="Show more Info">?</div>
-			<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
-			<button class="delete" title="Delete Entry" (click)="delete(entry);" style="float: right" class="delete-btn">x</button>
-			<div class="spacer" style="clear: both;"></div>
-		</ul>
-	</div>
-</ng-template>
-
-<app-show-info [dispInfo]="dispInfo"></app-show-info>
-
-<div class="search" id="search-component" align="center">
-  	<h4><label for="search-box">Search Entry</label></h4>
-  	<input #searchBox id="search-box" (input)="search(searchBox.value)">
 </div>
