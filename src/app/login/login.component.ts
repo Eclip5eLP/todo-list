@@ -25,10 +25,12 @@ export class LoginComponent implements OnInit {
   private register_p = "";
   users: any;
 
+  //Generate ID for new User
   genId(usr: Users[]): number {
     return usr.length > 0 ? Math.max(...usr.map(usr => usr.id)) + 1 : 11;
   }
 
+  //Login Logic
   login() {
   	let success = false;
   	this.getListsService.checkLogin(this.login_u, this.login_p).subscribe(success => {
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
   	});
   }
 
+  //Register Logic
   register() {
     this.register_u = this.register_u.trim();
   	if (!this.register_u) { console.log("Name cannot be empty"); return; }
@@ -59,17 +62,20 @@ export class LoginComponent implements OnInit {
   	});
   }
 
+  //Logout
   logout() {
   	deleteCookie("username");
   	this.refresh();
   }
 
+  //Get current User Information
   loadUsers(): void {
     this.getListsService.loadUsers().subscribe(users => {
       this.users = users;
     });
   }
 
+  //Refresh Browser Window
   refresh(): void {
     window.location.reload();
   }

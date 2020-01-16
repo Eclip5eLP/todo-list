@@ -31,10 +31,12 @@ export class DashboardComponent implements OnInit {
   	this.getLists();
   }
 
+  //Generate ID for new List
   genId(lists: Lists[]): number {
     return lists.length > 0 ? Math.max(...lists.map(list => list.id)) + 1 : 11;
   }
 
+  //Create a new List
   addList(name: string): void {
     name = name.trim();
     if (!name) { console.log("Name cannot be empty"); return; }
@@ -45,27 +47,35 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  //Better getTime function
+  //Overwrites standard one
   private getTime(date?: Date) {
     return date != null ? date.getTime() : 0;
   }
 
+  //Change State of Entry
   changeState(entry: Entries): void {
   	this.getListsService.changeState(entry).subscribe(ref => this.refresh());
   }
 
+  //Show Edit Dialogue for Entry
   showInfo(entry: Entries): void {
 	  if (this.dispInfo == null) this.dispInfo = entry;
   }
 
+  //Delete Entry
   delete(entry: Entries): void {
   	this.tasks = this.tasks.filter(h => h != entry);
   	this.getListsService.removeEntry(entry).subscribe();
   }
 
+  //Refresh Browser Window
   refresh(): void {
     window.location.reload();
   }
 
+  //Get all Lists for current User
+  //(TODO) Add Important/Urgent Task displaying
   getLists(): void {
     this.getListsService.getLists()
       .subscribe(lists => {

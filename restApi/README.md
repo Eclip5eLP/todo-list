@@ -14,3 +14,28 @@ Mit der ToDo-List kann man sich Dinge einspeichern die man noch erledigen muss, 
 
 Please run `npm install express mongodb body-parser --save` and `npm install bcrypt` inside this directory to install the needed dependencies.
 No further prerequisites needed.
+
+## API
+
+All valid API Calls
+
+/                           Base
+/api                        Base
+/api/:id                    Get/Update/Remove Entry by ID
+/api/u/:user                Get all Lists of User
+
+/api/login                  Login Request
+/api/login/key              Login Request via Key
+
+/api/entries                Get all Entries
+
+/api/lists                  Get all Lists
+/api/lists/e/:id            Get all Entries of List
+/api/lists/u/:id            Update Lists by ID
+/api/lists/r/:id            Remove Lists by ID
+/api/lists/o/:id            Get Lists by ID
+/api/lists/p/:id            Parse any received Data
+/api/lists/a/:id            Add Entry to List
+
+/api/users                  Add Users
+/api/users/:id              Get/Remove User by ID

@@ -34,6 +34,7 @@ export class TodoListComponent implements OnInit {
   	private datepipe: DatePipe
   ) { }
 
+  //Submit Search Term to Server
   search(term: string): void {
   	if (term == "") {
   		this.showFilter = false;
@@ -44,22 +45,27 @@ export class TodoListComponent implements OnInit {
 
   }
 
+  //isType functions
   isArray(arr) { return Array.isArray(arr); }
   isObject(obj) { if (obj instanceof Object) return true; else return false; }
   isSubject(sub) { if (sub instanceof Subject) return true; else return false; }
 
+  //Generate ID for new Entry
   genId(entry: Entries[]): number {
     return entry.length > 0 ? Math.max(...entry.map(entry => entry.id)) + 1 : 11;
   }
   
+  //Change state of Entry
   changeState(entry: Entries): void {
   	this.getListsService.changeState(entry).subscribe();
   }
 
+  //Show Edit Dialogue for Entry
   showInfo(entry: Entries): void {
 	  this.dispInfo = entry;
   }
 
+  //Get all Entries of current List
   getLists(): void {
   	this.getListsService.getEntries().subscribe(lists => {
       this.lists = lists;
@@ -73,6 +79,7 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  //Check if User is allowed to view and edit current List
   ownsList(): void {
     this.getListsService.listCheckOwner().subscribe(list => {
       for (let i = 0; i < list[0].users.length; i++) {
@@ -81,12 +88,14 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  //Get all Entries
   getAllEntries(): void {
     this.getListsService.getAllEntries().subscribe(e => {
       this.allEntries = e;
     });
   }
 
+  //Add new Entry to current List
   add(name: string): void {
   	name = name.trim();
     var idd = window.location.pathname.split("/").pop();
@@ -98,6 +107,7 @@ export class TodoListComponent implements OnInit {
   	  });
   }
 
+  //Delete Entry from current List
   delete(entry: Entries): void {
   	this.lists = this.lists.filter(h => h != entry);
   	this.getListsService.removeEntry(entry).subscribe();
@@ -108,6 +118,7 @@ export class TodoListComponent implements OnInit {
     this.getAllEntries();
     this.ownsList();
 
+    //Filter Logic
   	this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),

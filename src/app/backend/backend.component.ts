@@ -25,23 +25,28 @@ export class BackendComponent implements OnInit {
   LISTS: Lists[];
   USERS: Users[];
 
+  //Get all Entries
   getAllEntries(): void {
     this.getListsService.getAllEntries().subscribe(e => {
       this.ENTRIES = e;
     });
   }
 
+  //Get all Users
   getUsers(): void {
   	this.getListsService.loadUsers().subscribe(users => {
       this.USERS = users;
     });
   }
 
+  //Get all Lists
   getLists(): void {
   	this.getListsService.getAllLists().subscribe(lists => {
       this.LISTS = lists;
     });
   }
+
+  //(TODO) Add Management Logic
 
   constructor(
   	private getListsService: LoadListsService,
@@ -50,7 +55,7 @@ export class BackendComponent implements OnInit {
 
   ngOnInit() {
   	this.tab = window.location.pathname.split("/").pop();
-  	/*
+  	/* (TODO) Add Admin only checking
   	if (this.getListsService.hasRole(this.getListsService.user, "admin")) {
   		this.isAdmin = true;
   	} else {
@@ -58,6 +63,7 @@ export class BackendComponent implements OnInit {
   	}
   	*/
 
+    //Get all needed Entities
   	this.getLists();
     this.getAllEntries();
     this.getUsers();
