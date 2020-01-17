@@ -98,8 +98,11 @@ export class BackendComponent implements OnInit {
     this.dispEntry = entry;
   }
 
+  //Temp
+  add(l: any) {}
+
   constructor(
-  	private getListsService: LoadListsService,
+  	public getListsService: LoadListsService,
   	private datepipe: DatePipe,
     public messageService: MessageService
   ) { }

@@ -45,7 +45,7 @@
 			<div class="list">
 				<h2>Create new List</h2>
 				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
-				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
+				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn" disabled>Add</button>
 			</div>
 		</div>
 		<div *ngIf="tab == 'entries'">
@@ -64,7 +64,7 @@
 			<div class="list">
 				<h2>Create new Entry</h2>
 				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
-				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
+				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn" disabled>Add</button>
 			</div>
 		</div>
 		<app-show-info [dispUser]="dispUser" [dispList]="dispList" [dispEntry]="dispEntry"></app-show-info>

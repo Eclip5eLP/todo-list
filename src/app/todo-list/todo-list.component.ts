@@ -28,10 +28,10 @@ export class TodoListComponent implements OnInit {
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
   allEntries: any;
-  private allowView = false;
+  public allowView = false;
 
   constructor(
-  	private getListsService: LoadListsService,
+  	public getListsService: LoadListsService,
   	private datepipe: DatePipe,
     public messageService: MessageService
   ) { }

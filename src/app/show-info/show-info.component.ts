@@ -54,7 +54,7 @@ export class ShowInfoComponent implements OnInit {
   }
 
   constructor(
-    private listsService: LoadListsService,
+    public listsService: LoadListsService,
     private datepipe: DatePipe,
     public messageService: MessageService
   ) { }

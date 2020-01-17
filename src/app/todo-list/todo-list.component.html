@@ -1,5 +1,5 @@
 <div *ngIf="getListsService.user != null">
-	<div *ngIf="allowView; else notAllowed">
+	<div *ngIf="this.allowView; else notAllowed">
 		<h1>List</h1>
 		<nav>
 			<button routerLink="/dashboard">Dashboard</button>
