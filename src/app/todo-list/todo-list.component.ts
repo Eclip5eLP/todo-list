@@ -9,6 +9,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
 import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-todo-list',
@@ -31,7 +32,8 @@ export class TodoListComponent implements OnInit {
 
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   //Submit Search Term to Server
@@ -52,7 +54,9 @@ export class TodoListComponent implements OnInit {
 
   //Generate ID for new Entry
   genId(entry: Entries[]): number {
-    return entry.length > 0 ? Math.max(...entry.map(entry => entry.id)) + 1 : 11;
+    //return entry.length > 0 ? Math.max(...entry.map(entry => entry.id)) + 1 : 11;
+    if (entry.length) return entry[entry.length - 1].id + 1;
+    return 1;
   }
   
   //Change state of Entry
@@ -111,6 +115,13 @@ export class TodoListComponent implements OnInit {
   delete(entry: Entries): void {
   	this.lists = this.lists.filter(h => h != entry);
   	this.getListsService.removeEntry(entry).subscribe();
+  }
+
+  //Delete List
+  delList(): void {
+    var idd = window.location.pathname.split("/").pop();
+    this.getListsService.deleteList(parseInt(idd)).subscribe();
+    window.location.href = this.getListsService.listsUrl.replace("/api", "");
   }
 
   ngOnInit() {

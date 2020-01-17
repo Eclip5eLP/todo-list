@@ -12,6 +12,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
 import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-backend',
@@ -19,11 +20,14 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   styleUrls: ['./backend.component.css']
 })
 export class BackendComponent implements OnInit {
-  isAdmin = true;
   tab = "admin";
+  isAdmin = false;
   ENTRIES: Entries[];
   LISTS: Lists[];
   USERS: Users[];
+  dispUser: Users;
+  dispEntry: Entries;
+  dispList: Lists;
 
   //Get all Entries
   getAllEntries(): void {
@@ -46,27 +50,69 @@ export class BackendComponent implements OnInit {
     });
   }
 
+  //Check if User is Admin
+  checkAdmin(): void {
+    this.getListsService.loadUsers().subscribe(users => {
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].username == getCookie("username")) {
+          for (let j = 0; j < users[i].roles.length; j++) {
+            if (users[i].roles[j] == "admin") this.isAdmin = true;
+          }
+        }
+      }
+    });
+  }
+
   //(TODO) Add Management Logic
+
+  //Delete a User
+  deleteUser(user: Users): void {
+    this.USERS = this.USERS.filter(h => h != user);
+    this.getListsService.deleteUser(user).subscribe();
+  }
+
+  //Delete a List
+  deleteList(list: Lists): void {
+    this.LISTS = this.LISTS.filter(h => h != list);
+    this.getListsService.deleteList(list).subscribe();
+  }
+
+  //Delete an Entry
+  deleteEntry(entry: Entries): void {
+    this.ENTRIES = this.ENTRIES.filter(h => h != entry);
+    this.getListsService.removeEntry(entry).subscribe();
+  }
+
+  //Show Edit Dialogue for Users
+  editUser(user: Users): void {
+    this.dispUser = user;
+  }
+
+  //Show Edit Dialogue for Lists
+  editList(list: Lists): void {
+    this.dispList = list;
+  }
+
+  //Show Edit Dialogue for Entries
+  editEntry(entry: Entries): void {
+    this.dispEntry = entry;
+  }
 
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {
-  	this.tab = window.location.pathname.split("/").pop();
-  	/* (TODO) Add Admin only checking
-  	if (this.getListsService.hasRole(this.getListsService.user, "admin")) {
-  		this.isAdmin = true;
-  	} else {
-  		this.isAdmin = false
-  	}
-  	*/
+    this.tab = window.location.pathname.split("/").pop();
 
     //Get all needed Entities
   	this.getLists();
     this.getAllEntries();
     this.getUsers();
+
+    this.checkAdmin();
   }
 
 }

@@ -8,9 +8,8 @@
 	</nav>
 	<div class="list" *ngIf="tasks; else noLists">
 		<h3>Important/Urgent Tasks</h3>
-		Coming Soon...
 		<ul class="sub" *ngFor="let entry of tasks; let i = index">
-			<div *ngIf="i<3">
+			<div *ngIf="i<dashboard_amount">
 				<li class="{{entry.state}}" id="entry-{{entry.id}}" (click)="changeState(entry);">
 					{{entry.name}}
 				</li>

@@ -1,5 +1,5 @@
 <div *ngIf="getListsService.user != null">
-	<div *ngIf="isAdmin">
+	<div *ngIf="isAdmin; else notAllowed">
 		<h1>Administration</h1>
 		<nav>
 			<button routerLink="/admin" [ngClass]="tab == 'admin' ? 'selected': 'none'">Dashboard</button>
@@ -20,10 +20,14 @@
 					<li>
 						{{usr.username}}
 					</li>
-					<div class="moreInfo" (click)="showInfo(usr);" title="Edit">?</div>
+					<div class="moreInfo" (click)="editUser(usr);" title="Edit">?</div>
 					<button class="delete" title="Delete User" (click)="deleteUser(usr);" style="float: right" class="delete-btn">x</button>
 					<div class="spacer" style="clear: both;"></div>
 				</ul>
+			</div>
+			<div class="list">
+				<h2>Create new User</h2>
+				Please create new Users from the Register Menu
 			</div>
 		</div>
 		<div *ngIf="tab == 'lists'">
@@ -33,10 +37,15 @@
 					<li>
 						{{list.name}}
 					</li>
-					<div class="moreInfo" (click)="showInfo(list);" title="Edit">?</div>
-					<button class="delete" title="Delete User" (click)="deleteUser(list);" style="float: right" class="delete-btn">x</button>
+					<div class="moreInfo" (click)="editList(list);" title="Edit">?</div>
+					<button class="delete" title="Delete List" (click)="deleteList(list);" style="float: right" class="delete-btn">x</button>
 					<div class="spacer" style="clear: both;"></div>
 				</ul>
+			</div>
+			<div class="list">
+				<h2>Create new List</h2>
+				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
+				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
 			</div>
 		</div>
 		<div *ngIf="tab == 'entries'">
@@ -46,11 +55,24 @@
 					<li>
 						{{entry.name}}
 					</li>
-					<div class="moreInfo" (click)="showInfo(entry);" title="Edit">?</div>
-					<button class="delete" title="Delete User" (click)="deleteUser(entry);" style="float: right" class="delete-btn">x</button>
+					<div class="moreInfo" (click)="editEntry(entry);" title="Edit">?</div>
+					<div style="clear: both; float: left">Finish By: <u>{{entry.dispdate}}</u></div>
+					<button class="delete" title="Delete Entry" (click)="deleteEntry(entry);" style="float: right" class="delete-btn">x</button>
 					<div class="spacer" style="clear: both;"></div>
 				</ul>
 			</div>
+			<div class="list">
+				<h2>Create new Entry</h2>
+				<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
+				<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
+			</div>
 		</div>
+		<app-show-info [dispUser]="dispUser" [dispList]="dispList" [dispEntry]="dispEntry"></app-show-info>
 	</div>
 </div>
+
+<ng-template #notAllowed>
+	<div class="list">
+		You are not allowed to view this content!
+	</div>
+</ng-template>

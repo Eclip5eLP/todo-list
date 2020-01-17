@@ -12,6 +12,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
 import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-login',
@@ -38,20 +39,23 @@ export class LoginComponent implements OnInit {
   			this.getListsService.user = this.login_u;
   			setCookie("username", this.login_u);
   			setCookie("apikey", success.key);
+        this.refresh();
   			return;
   		}
   		console.log("Failed to Login");
-  		return
+      this.messageService.add("Failed to Login");
+  		return;
   	});
   }
 
   //Register Logic
   register() {
     this.register_u = this.register_u.trim();
-  	if (!this.register_u) { console.log("Name cannot be empty"); return; }
+  	if (!this.register_u) { console.log("Name cannot be empty"); this.messageService.add("name cannot be empty"); return; }
   	for (let i = 0; i < this.users.length; i++) {
   		if (this.users[i].username == this.register_u) {
 	  		console.log("Name already in use");
+        this.messageService.add("Name already in use");
 	  		return;
 	  	}
   	}
@@ -82,7 +86,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {
