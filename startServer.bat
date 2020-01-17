@@ -9,7 +9,7 @@ if exist "%temp%\nodeServer.bat" del /f /q "%temp%\nodeServer.bat"
 	echo title REST API
 	echo cd %cd%\restApi\
 	echo echo ^/----------------^\
-	echo echo ^| Server Running ^|
+	echo echo ^^^| Server Running ^^^|
 	echo echo ^\----------------^/
 	echo node server.js ^>^> %sd%\restApi\server.log
 	echo echo.

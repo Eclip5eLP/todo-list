@@ -233,21 +233,21 @@ app.put("/api/lists/u/:id", (req, resp) => {
 //Delete a List by ID
 app.delete("/api/lists/r/:id", (req, resp) => {
    var id = req.params.id;
-   log("Deleted List: ", id);
+   log("Deleted List: " + id);
    lists.deleteOne({ id: parseInt(id) });
 });
 
 //Delete an Entry by ID
 app.delete("/api/:id", (req, resp) => {
    var id = req.params.id;
-   log("Deleted Entry: ", id);
+   log("Deleted Entry: " + id);
    entries.deleteOne({ id: parseInt(id) });
 });
 
 //Delete a user by ID
 app.delete("/api/users/:id", (req, resp) => {
    var id = req.params.id;
-   log("Deleted User: ", id);
+   log("Deleted User: " + id);
    users.deleteOne({ id: parseInt(id) });
 });
 

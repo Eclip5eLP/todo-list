@@ -129,19 +129,19 @@ export class LoadListsService {
 	  		//Check Overdue
 	  		if (tyear > year) { //Year
 	  			lists[i].state = "overdue";
-	  			console.log("'" + lists[i].name + "' Overdue: Past Year");
+	  			//console.log("'" + lists[i].name + "' Overdue: Past Year");
 	  		} else if (tmonth > month) { //Month
 	  			lists[i].state = "overdue";
-	  			console.log("'" + lists[i].name + "' Overdue: Past Month");
+	  			//console.log("'" + lists[i].name + "' Overdue: Past Month");
 	  		} else if (tday > day && tmonth == month) { //Day
 	  			lists[i].state = "overdue";
-	  			console.log("'" + lists[i].name + "' Overdue: Past Days");
+	  			//console.log("'" + lists[i].name + "' Overdue: Past Days");
 	  		} else if (month <= tmonth + 1 && day <= 2 && tday >= 28) {
 	  			lists[i].state = "urgent";
-	  			console.log("'" + lists[i].name + "' Urgent: Beware new Month");
+	  			//console.log("'" + lists[i].name + "' Urgent: Beware new Month");
 	  		} else if (day <= (tday + 2) && tmonth == month) { //Day
 	  			lists[i].state = "urgent";
-	  			console.log("'" + lists[i].name + "' Urgent: In less than 2 Days");
+	  			//console.log("'" + lists[i].name + "' Urgent: In less than 2 Days");
 	  		}
   		} else if (lists[i].state == "important") {
   			//Do nothing
@@ -160,11 +160,10 @@ export class LoadListsService {
   	);
   }
 
-  //Remove an Entry from the current List
+  //Remove an Entry by ID
   removeEntry(entry: Entries | number): Observable<Entries> {
   	const id = typeof entry === "number" ? entry : entry.id;
   	const url = `${this.listsUrl}/${id}`;
-
   	return this.http.delete<Entries>(url, this.httpOptions).pipe(
   	  tap(_ => console.log("Entry removed")),
   	  catchError(this.handleError<Entries>("removeEntry"))
@@ -180,12 +179,22 @@ export class LoadListsService {
   }
 
   //Delete a List
-  deleteList(id: number): Observable<Lists> {
+  deleteList(list: Lists | number): Observable<Lists> {
+    const id = typeof list === "number" ? list : list.id;
     const url = `${this.listsUrl}/lists/r/${id}`;
-
     return this.http.delete<Lists>(url, this.httpOptions).pipe(
       tap(_ => console.log("List removed")),
       catchError(this.handleError<Lists>("deleteList"))
+    );
+  }
+
+  //Delete a User
+  deleteUser(user: Users | number): Observable<Users> {
+    const id = typeof user === "number" ? user : user.id;
+    const url = `${this.listsUrl}/users/${id}`;
+    return this.http.delete<Users>(url, this.httpOptions).pipe(
+      tap(_ => { console.log("User Deleted"); this.messageService.add("User Deleted") }),
+      catchError(this.handleError<Users>("deleteUser"))
     );
   }
 

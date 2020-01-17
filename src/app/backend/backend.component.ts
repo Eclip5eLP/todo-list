@@ -61,6 +61,24 @@ export class BackendComponent implements OnInit {
 
   //(TODO) Add Management Logic
 
+  //Delete a User
+  deleteUser(user: Users): void {
+    this.USERS = this.USERS.filter(h => h != user);
+    this.getListsService.deleteUser(user).subscribe();
+  }
+
+  //Delete a List
+  deleteList(list: Lists): void {
+    this.LISTS = this.LISTS.filter(h => h != list);
+    this.getListsService.deleteList(list).subscribe();
+  }
+
+  //Delete an Entry
+  deleteEntry(entry: Entries): void {
+    this.ENTRIES = this.ENTRIES.filter(h => h != entry);
+    this.getListsService.removeEntry(entry).subscribe();
+  }
+
   constructor(
   	private getListsService: LoadListsService,
   	private datepipe: DatePipe
