@@ -1,5 +1,5 @@
 <div *ngIf="getListsService.user != null">
-	<div *ngIf="allowView">
+	<div *ngIf="allowView; else notAllowed">
 		<h1>List</h1>
 		<nav>
 			<button routerLink="/dashboard">Dashboard</button>
@@ -23,6 +23,10 @@
 						<h2>Add new entry</h2>
 						<label class="input">Title: <input #entryTitle placeholder="Enter Title" value=""></label><br>
 						<button (click)="add(entryTitle.value); entryTitle.value='';" class="btn">Add</button>
+					</div>
+					<div class="list">
+						<h2>Delete this List</h2>
+						<button (click)="delList();" class="btn">Delete List</button>
 					</div>
 				</div>
 			</div>
@@ -56,3 +60,9 @@
 		</div>
 	</div>
 </div>
+
+<ng-template #notAllowed>
+	<div class="list">
+		You are not allowed to view this content!
+	</div>
+</ng-template>

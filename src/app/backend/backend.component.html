@@ -1,5 +1,5 @@
 <div *ngIf="getListsService.user != null">
-	<div *ngIf="isAdmin">
+	<div *ngIf="isAdmin; else notAllowed">
 		<h1>Administration</h1>
 		<nav>
 			<button routerLink="/admin" [ngClass]="tab == 'admin' ? 'selected': 'none'">Dashboard</button>
@@ -54,3 +54,9 @@
 		</div>
 	</div>
 </div>
+
+<ng-template #notAllowed>
+	<div class="list">
+		You are not allowed to view this content!
+	</div>
+</ng-template>

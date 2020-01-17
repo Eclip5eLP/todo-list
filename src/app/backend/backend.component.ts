@@ -19,8 +19,8 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   styleUrls: ['./backend.component.css']
 })
 export class BackendComponent implements OnInit {
-  isAdmin = true;
   tab = "admin";
+  isAdmin = false;
   ENTRIES: Entries[];
   LISTS: Lists[];
   USERS: Users[];
@@ -46,6 +46,19 @@ export class BackendComponent implements OnInit {
     });
   }
 
+  //Check if User is Admin
+  checkAdmin(): void {
+    this.getListsService.loadUsers().subscribe(users => {
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].username == getCookie("username")) {
+          for (let j = 0; j < users[i].roles.length; j++) {
+            if (users[i].roles[j] == "admin") this.isAdmin = true;
+          }
+        }
+      }
+    });
+  }
+
   //(TODO) Add Management Logic
 
   constructor(
@@ -54,19 +67,14 @@ export class BackendComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  	this.tab = window.location.pathname.split("/").pop();
-  	/* (TODO) Add Admin only checking
-  	if (this.getListsService.hasRole(this.getListsService.user, "admin")) {
-  		this.isAdmin = true;
-  	} else {
-  		this.isAdmin = false
-  	}
-  	*/
+    this.tab = window.location.pathname.split("/").pop();
 
     //Get all needed Entities
   	this.getLists();
     this.getAllEntries();
     this.getUsers();
+
+    this.checkAdmin();
   }
 
 }

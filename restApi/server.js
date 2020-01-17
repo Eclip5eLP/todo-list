@@ -31,23 +31,23 @@ app.post("/api/login", (req, resp) => {
    var usr = req.body;
    var name = usr.name;
    var pass = usr.pass;
-   console.log("Login attempt: " + name);
+   log("Login attempt: " + name);
    users.find({ username: name }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
-         console.log(res);
          bcrypt.compare(pass, res[0].password, (err, f) => {
             if (f) {
-               console.log("Login succeeded with: " + f);
+               log("Login successfull");
                var str = randString();
                users.updateOne({ username: name, password: res[0].password }, { $set: { apikey: str } });
                resp.send({key: str});
             } else {
-               console.log("Login failed with: " + f);
+               log("Login failed: Passwords not matching");
                resp.send("false");
             }
          });
       } else {
+         log("Login failed: User doesnt exist");
          resp.send("false");
       }
    });
@@ -58,12 +58,14 @@ app.post("/api/login/key", (req, resp) => {
    var usr = req.body;
    var name = usr.name;
    var key = usr.apikey;
+   log("Key Login attempt: " + name);
    users.find({ username: name, apikey: key }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("Key Login successfull");
          resp.send(true);
       } else {
-         console.log("No Users found");
+         log("Key Login failed: User doesnt exist or Key is invalid");
          resp.send("[]");
       }
    });
@@ -74,9 +76,10 @@ app.get("/api/entries", (req, resp) => {
    entries.find({}).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("All Entries requested");
          resp.send(res);
       } else {
-         console.log("No Entries found");
+         log("No Entries found");
          resp.send("[]");
       }
    });
@@ -87,9 +90,10 @@ app.get("/api/lists", (req, resp) => {
    lists.find({}).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("All Lists requested");
          resp.send(res);
       } else {
-         console.log("No Lists found");
+         log("No Lists found");
          resp.send("[]");
       }
    });
@@ -100,9 +104,10 @@ app.get("/api/users", (req, resp) => {
    users.find({}).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("All Users requested");
          resp.send(res);
       } else {
-         console.log("No Users found");
+         log("No Users found");
          resp.send("[]");
       }
    });
@@ -113,6 +118,7 @@ app.get("/api/lists/o/:id", (req, resp) => {
    var id = req.params.id;
    lists.find({ id: parseInt(id) }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
+      log("Requested List with ID: " + id);
       resp.send(res);
    });
 });
@@ -122,6 +128,7 @@ app.get("/api/:id", (req, resp) => {
    var itemID = req.params.id;
    entries.find({ id: parseInt(itemID) }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
+      log("Requested Entry with ID: " + itemID);
       resp.send(res);
    });
 });
@@ -132,9 +139,10 @@ app.get("/api/u/:user", (req, resp) => {
    lists.find({ users: { $in: [ user ] } }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("Requested all Lists of User '" + user + "'");
          resp.send(res);
       } else {
-         console.log("No Lists found");
+         log("No Lists found for User '" + user + "'");
          resp.send("[]");
       }
    });
@@ -144,9 +152,10 @@ app.get("/api/u/:user", (req, resp) => {
 app.post("/api/lists/a/:id", (req, resp) => {
    var id = req.params.id;
    var item = req.body;
-   console.log("Adding new Entry to List: ", id, " ", item);
+   log("Adding new Entry to List: ", id, " ", item);
    entries.insertOne(item, (err, res) => {
       if (err) return resp.status(500).send(err);
+      log("Added an Entry to List ID: " + id);
       resp.send(res.res);
    });
 });
@@ -156,9 +165,10 @@ app.post("/api/users", (req, resp) => {
    var item = req.body;
    bcrypt.hash(item.password, 10, (err, hash) => {
       item.password = hash;
-      console.log("Adding new User: ", item);
+      log("Adding new User: ", item);
       users.insertOne(item, (err, res) => {
       if (err) return resp.status(500).send(err);
+         log("Created a new User: " + item.username);
          resp.send(res.res);
       });
    })
@@ -167,12 +177,13 @@ app.post("/api/users", (req, resp) => {
 //Add a List
 app.post("/api/lists", (req, resp) => {
    var item = req.body;
-   console.log("Adding new List: ", item);
+   log("Adding new List: ", item);
    lists.insertOne(item, (err, res) => {
       if (err) {
          resp.send("[]");
          return resp.status(500).send(err);
       }
+      log("Created a new List: " + item.name);
       resp.send(res.res);
    });
 });
@@ -183,9 +194,10 @@ app.get("/api/lists/e/:id", (req, resp) => {
    entries.find({ list: parseInt(id) }).toArray((err, res) => {
       if (err) return resp.status(500).send(err);
       if (res.length) {
+         log("Requested all Entries of List ID: " + id);
          resp.send(res);
       } else {
-         console.log("No Entries found");
+         log("No Entries found");
          resp.send("[]");
       }
    });
@@ -196,8 +208,7 @@ app.put("/api/:id", (req, resp) => {
    var itemID = req.params.id;
    var item = req.body;
    delete item._id;
-   console.log("Updating Entry: ", itemID, " to be ", item);
-
+   log("Updated Entry: ", itemID, " to be ", item);
    entries.updateOne({ id: parseInt(itemID) }, { $set: item });
 });
 
@@ -206,8 +217,7 @@ app.put("/api/users/:id", (req, resp) => {
    var id = req.params.id;
    var item = req.body;
    delete item._id;
-   console.log("Updating User: ", id, " to be ", item);
-
+   log("Úpdated User: ", id, " to be ", item);
    users.updateOne({ id: parseInt(itemID) }, { $set: item });
 });
 
@@ -216,31 +226,56 @@ app.put("/api/lists/u/:id", (req, resp) => {
    var item = req.body;
    var id = req.params.id;
    delete item._id;
-   console.log("Updating List: ", id, " to be ", item);
-
+   log("Updated List: ", id, " to be ", item);
    lists.updateOne({ id: parseInt(id) }, { $set: item });
 });
 
 //Delete a List by ID
 app.delete("/api/lists/r/:id", (req, resp) => {
    var id = req.params.id;
-   console.log("Deleting List: ", id);
+   log("Deleted List: ", id);
    lists.deleteOne({ id: parseInt(id) });
 });
 
 //Delete an Entry by ID
 app.delete("/api/:id", (req, resp) => {
    var id = req.params.id;
-   console.log("Deleting Entry: ", id);
+   log("Deleted Entry: ", id);
    entries.deleteOne({ id: parseInt(id) });
 });
 
 //Delete a user by ID
 app.delete("/api/users/:id", (req, resp) => {
    var id = req.params.id;
-   console.log("Deleting User: ", id);
+   log("Deleted User: ", id);
    users.deleteOne({ id: parseInt(id) });
 });
+
+//Search for Entry in List
+app.get("/api/search/:id/:term", (req, resp) => {
+   var id = req.params.id;
+   var term = req.params.term;
+   var regex = new RegExp(["", term, ""].join(""), "i");
+   entries.find({ name: regex, list: parseInt(id) }).toArray((err, res) => {
+      if (err) return resp.status(500).send(err);
+      log("Searching for '" + term + "'");
+      resp.send(res);
+   });
+});
+
+function log(msg, type = "log") {
+   var timestamp = "[" + getFormattedDate() + "]";
+   if (type == "log") console.log(timestamp + " " + msg);
+   if (type == "warn") console.warn(timestamp + " " + msg);
+   if (type == "info") console.info(timestamp + " " + msg);
+   if (type == "error") console.error(timestamp + " " + msg);
+}
+
+function getFormattedDate() {
+   var date = new Date();
+   var str = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " +  date.getHours() + ":" + date.getMinutes() + "." + date.getSeconds();
+   return str;
+}
 
 //Start Server
 app.listen(4000, () => {
@@ -257,8 +292,8 @@ app.listen(4000, () => {
       entries = db.collection("entries");
       users = db.collection("users");
       lists = db.collection("lists");
-      console.log("Connected to Database");
-      console.log("Server Running on port " + port);
+      log("Connected to Database");
+      log("Server Running on port " + port);
    });
 });
 
@@ -284,7 +319,9 @@ All valid API Calls
 /api/lists/p/:id            Parse any received Data  (Parse)
 /api/lists/a/:id            Add Entry to List        (Add)
 
-/api/users                  Add Users
+/api/search/:id/:term       Search for an Entry in current List
+
+/api/users                  Get all/Add Users
 /api/users/:id              Get/Remove User by ID
 
 */

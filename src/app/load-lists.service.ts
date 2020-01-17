@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Entries } from "./entries";
 import { Lists } from "./lists";
 import { Users } from "./users";
+import { setCookie } from "./cookie-utils";
+import { getCookie } from "./cookie-utils";
+import { deleteCookie } from "./cookie-utils";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -14,23 +17,30 @@ import { MessageService } from "./message.service";
   providedIn: 'root'
 })
 export class LoadListsService {
-  private listsUrl = "http://localhost:4200/api";
+  public listsUrl = "http://localhost:4200/api";
   public user = null;
 
   httpOptions = {
   	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  //Update User Variable based on Cookie
+  updateUserVar() {
+    let u = getCookie("username");
+    if (u != undefined) {
+      this.user = u;
+    }
+  }
+
   //Get all Lists of current User (null request if none)
   getLists(): Observable<Lists[]> {
+    this.updateUserVar();
     return this.http.get<Lists[]>(this.listsUrl + "/u/" + this.user);
-    console.log(this.router.url);
   }
 
   //Get all Lists
   getAllLists(): Observable<Lists[]> {
     return this.http.get<Lists[]>(this.listsUrl + "/lists");
-    console.log(this.router.url);
   }
 
   //Check if user has a specific Role
@@ -41,6 +51,11 @@ export class LoadListsService {
       if (usr.roles[i] == role) return true;
     }
     return false;
+  }
+
+  //Check if current user has a specific Role
+  hasRoleSelf(role: String): Boolean {
+    return this.hasRole(this.user, role);
   }
 
   //Check if User is part of a specific List
@@ -164,19 +179,28 @@ export class LoadListsService {
     );
   }
 
+  //Delete a List
+  deleteList(id: number): Observable<Lists> {
+    const url = `${this.listsUrl}/lists/r/${id}`;
+
+    return this.http.delete<Lists>(url, this.httpOptions).pipe(
+      tap(_ => console.log("List removed")),
+      catchError(this.handleError<Lists>("deleteList"))
+    );
+  }
+
   //Refresh Browser Window
   refresh(): void {
   	window.location.reload();
   }
 
   //Filter: Search any Entry in a List.
-  //        Currently not working.
-  //        (TODO: Add /api/search/:term to API)
   searchEntry(term: string): Observable<Entries[]> {
     if (!term.trim()) {
       return of([]);
     }
-    return this.http.get<Entries[]>(`${this.listsUrl}/search/${term}`).pipe(
+    let idd = window.location.pathname.split("/").pop();
+    return this.http.get<Entries[]>(`${this.listsUrl}/search/${idd}/${term}`).pipe(
       tap(_ => console.log(`Searching entries matching "${term}"`)),
       catchError(this.handleError<Entries[]>('searchEntry', [])),
       map(response => { return this.validateStates(response); })
