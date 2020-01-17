@@ -12,6 +12,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
 import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-backend',
@@ -24,6 +25,9 @@ export class BackendComponent implements OnInit {
   ENTRIES: Entries[];
   LISTS: Lists[];
   USERS: Users[];
+  dispUser: Users;
+  dispEntry: Entries;
+  dispList: Lists;
 
   //Get all Entries
   getAllEntries(): void {
@@ -79,9 +83,25 @@ export class BackendComponent implements OnInit {
     this.getListsService.removeEntry(entry).subscribe();
   }
 
+  //Show Edit Dialogue for Users
+  editUser(user: Users): void {
+    this.dispUser = user;
+  }
+
+  //Show Edit Dialogue for Lists
+  editList(list: Lists): void {
+    this.dispList = list;
+  }
+
+  //Show Edit Dialogue for Entries
+  editEntry(entry: Entries): void {
+    this.dispEntry = entry;
+  }
+
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {

@@ -9,6 +9,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker'; 
 import { EntryFilterComponent } from "../entry-filter/entry-filter.component";
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-todo-list',
@@ -31,7 +32,8 @@ export class TodoListComponent implements OnInit {
 
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   //Submit Search Term to Server

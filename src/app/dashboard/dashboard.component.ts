@@ -6,6 +6,7 @@ import { LoadListsService } from "../load-lists.service";
 import { DatePipe } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../format-datepicker';
+import { MessageService } from "../message.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
   	private getListsService: LoadListsService,
-  	private datepipe: DatePipe
+  	private datepipe: DatePipe,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {

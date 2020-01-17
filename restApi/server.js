@@ -217,8 +217,8 @@ app.put("/api/users/:id", (req, resp) => {
    var id = req.params.id;
    var item = req.body;
    delete item._id;
-   log("Úpdated User: ", id, " to be ", item);
-   users.updateOne({ id: parseInt(itemID) }, { $set: item });
+   log("Updated User: ", id, " to be ", item);
+   users.updateOne({ id: parseInt(id) }, { $set: item });
 });
 
 //Update a List by ID
@@ -322,6 +322,6 @@ All valid API Calls
 /api/search/:id/:term       Search for an Entry in current List
 
 /api/users                  Get all/Add Users
-/api/users/:id              Get/Remove User by ID
+/api/users/:id              Get/Update/Remove User by ID
 
 */

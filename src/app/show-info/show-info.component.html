@@ -1,7 +1,7 @@
 <div class="info" *ngIf="this.dispInfo != null">
 	<h3>Edit Entry</h3>
-	<label class="input">Title: <input [(ngModel)]="dispInfo.name" placeholder="Title"></label><br>
-	<label class="input">Info: <input [(ngModel)]="dispInfo.info" placeholder="Description"></label><br>
+	<div class="input">Title: <input [(ngModel)]="dispInfo.name" placeholder="Title"></div><br>
+	<div class="input">Info: <input [(ngModel)]="dispInfo.info" placeholder="Description"></div><br>
 	<mat-form-field>
 		<input [value]="dispInfo.date" matInput [matDatepicker]="Datepicker" placeholder="Choose a date" #matDate>
 		<mat-datepicker-toggle matSuffix [for]="Datepicker"></mat-datepicker-toggle>
@@ -9,4 +9,37 @@
 	</mat-form-field><br>
 	<button (click)="changeState(dispInfo, 'important');" class="btn">Is Important</button><br>
 	<button (click)="save(matDate.value);" class="btn">Save</button>
+</div>
+
+<div class="info" *ngIf="this.dispUser != null">
+	<h3>Edit User</h3>
+	<div class="input">Username: <input [(ngModel)]="dispUser.username" placeholder="Username"></div><br>
+	<div class="input">Password: <input [(ngModel)]="dispUser.password" type="password" placeholder="Password" disabled></div><br>
+	<div class="input">Email: <input [(ngModel)]="dispUser.email" placeholder="Email"></div><br>
+	<div class="input">Active: <input [(ngModel)]="dispUser.active" type="checkbox" placeholder="Active" value="true"></div><br>
+	<div class="input">Roles: <input [(ngModel)]="dispUser.roles" placeholder="Roles"></div><br>
+	<button (click)="saveUser();" class="btn">Save</button>
+</div>
+
+<div class="info" *ngIf="this.dispList != null">
+	<h3>Edit List</h3>
+	<div class="input">Title: <input [(ngModel)]="dispList.name" placeholder="Title"></div><br>
+	<div class="input">Users: <input [(ngModel)]="dispList.users" placeholder="Users"></div><br>
+	<button (click)="saveList();" class="btn">Save</button>
+</div>
+
+<div class="info" *ngIf="this.dispEntry != null">
+	<h3>Edit Entry</h3>
+	<div class="input">Title: <input [(ngModel)]="dispEntry.name" placeholder="Title"></div><br>
+	<div class="input">Description: <input [(ngModel)]="dispEntry.info" placeholder="Description"></div><br>
+	<mat-form-field>
+		<input [(value)]="dispEntry.date" matInput [matDatepicker]="Datepicker" placeholder="Choose a date" #matDateV>
+		<mat-datepicker-toggle matSuffix [for]="Datepicker"></mat-datepicker-toggle>
+		<mat-datepicker #Datepicker></mat-datepicker>
+	</mat-form-field><br>
+	<div class="input">isDone: <input [(ngModel)]="dispEntry.isDone" type="checkbox" placeholder="Active" value="false"></div><br>
+	<div class="input">isImportant: <input [(ngModel)]="dispEntry.isImportant" type="checkbox" placeholder="Active" value="false"></div><br>
+	<div class="input">isUrgent: <input [(ngModel)]="dispEntry.isUrgent" type="checkbox" placeholder="Active" value="false"></div><br>
+	<div class="input">Assigned List: <input [(ngModel)]="dispEntry.list" placeholder="Assigned List"></div><br>
+	<button (click)="saveEntry(matDateV.value);" class="btn">Save</button>
 </div>

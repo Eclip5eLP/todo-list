@@ -238,11 +238,36 @@ export class LoadListsService {
       catchError(this.handleError<any>("changeState"))
     );
   }
+
+  //Update a User
+  updateUser(usr: Users): Observable<Users> {
+    this.messageService.add("User Saved");
+    let f = "[" + usr.roles + "]";
+    let l = f.substring(1, f.length-1).split(", ");
+    usr.roles = l[0].split(",");
+    return this.http.put(this.listsUrl + "/users/" + usr.id, usr, this.httpOptions).pipe(
+      tap(_ => {
+        console.log("User updated");
+      }),
+      catchError(this.handleError<any>("updateUser"))
+    );
+  }
+
+  //Update a List
+  updateList(list: Lists): Observable<Lists> {
+    this.messageService.add("List Saved");
+    return this.http.put(this.listsUrl + "/lists/u/" + list.id, list, this.httpOptions).pipe(
+      tap(_ => {
+        console.log("List updated");
+      }),
+      catchError(this.handleError<any>("updateList"))
+    );
+  }
   
   //Update an Entry
   updateEntry(entry: Entries): Observable<Entries> {
     this.messageService.add("Entry Saved");
-    return this.http.put(`${this.listsUrl}/${entry.id}`, entry, this.httpOptions).pipe(
+    return this.http.put(this.listsUrl + "/" + entry.id, entry, this.httpOptions).pipe(
       tap(_ => {
         console.log("Entry updated");
       }),
@@ -267,6 +292,7 @@ date
 isDone
 isImportant
 isUrgent
+list
 
 Lists format:
 id
