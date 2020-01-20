@@ -29,6 +29,11 @@ export class BackendComponent implements OnInit {
   dispEntry: Entries;
   dispList: Lists;
 
+  //Goto List
+  gotoList(id: any): void {
+    window.location.href = window.location.origin + "/lists/" + id;
+  }
+
   //Get all Entries
   getAllEntries(): void {
     this.getListsService.getAllEntries().subscribe(e => {
@@ -65,6 +70,18 @@ export class BackendComponent implements OnInit {
 
   //(TODO) Add Management Logic
 
+  //Generate ID for new List
+  genIdList(lists: Lists[]): number {
+    if (lists.length) return lists[lists.length - 1].id + 1;
+    return 1;
+  }
+
+  //Generate ID for new Entry
+  genIdEntry(entry: Entries[]): number {
+    if (entry.length) return entry[entry.length - 1].id + 1;
+    return 1;
+  }
+
   //Delete a User
   deleteUser(user: Users): void {
     this.USERS = this.USERS.filter(h => h != user);
@@ -98,8 +115,27 @@ export class BackendComponent implements OnInit {
     this.dispEntry = entry;
   }
 
-  //Temp
-  add(l: any) {}
+  //Add a new List
+  addList(name: string): void {
+    name = name.trim();
+    if (!name) { console.log("Name cannot be empty"); return; }
+    let list = {id: this.genIdList(this.LISTS), name: name, users:["system"]};
+    this.getListsService.addList(list as Lists)
+      .subscribe(list => {
+        this.LISTS.push(list);
+      });
+  }
+
+  //Add a new Entry
+  addEntry(name: string): void {
+    name = name.trim();
+    if (!name) { console.log("Name cannot be empty"); return; }
+    let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, date: "?", info: "No Info yet", id: this.genIdEntry(this.ENTRIES), list: -1};
+    this.getListsService.addEntry(entry as Entries)
+      .subscribe(entry => {
+        this.ENTRIES.push(entry);
+      });
+  }
 
   constructor(
   	public getListsService: LoadListsService,

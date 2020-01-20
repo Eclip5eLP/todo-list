@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit {
   //Logout
   logout() {
   	deleteCookie("username");
+    deleteCookie("apikey");
   	this.refresh();
   }
 

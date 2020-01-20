@@ -13,6 +13,7 @@
 
 <div class="info" *ngIf="this.dispUser != null">
 	<h3>Edit User</h3>
+	<div class="input">ID: <input [ngModel]="dispUser.id" placeholder="ID" disabled></div><br>
 	<div class="input">Username: <input [(ngModel)]="dispUser.username" placeholder="Username"></div><br>
 	<div class="input">Password: <input [(ngModel)]="dispUser.password" type="password" placeholder="Password" disabled></div><br>
 	<div class="input">Email: <input [(ngModel)]="dispUser.email" placeholder="Email"></div><br>
@@ -23,6 +24,7 @@
 
 <div class="info" *ngIf="this.dispList != null">
 	<h3>Edit List</h3>
+	<div class="input">ID: <input [ngModel]="dispList.id" placeholder="ID" disabled></div><br>
 	<div class="input">Title: <input [(ngModel)]="dispList.name" placeholder="Title"></div><br>
 	<div class="input">Users: <input [(ngModel)]="dispList.users" placeholder="Users"></div><br>
 	<button (click)="saveList();" class="btn">Save</button>
@@ -30,6 +32,7 @@
 
 <div class="info" *ngIf="this.dispEntry != null">
 	<h3>Edit Entry</h3>
+	<div class="input">ID: <input [ngModel]="dispEntry.id" placeholder="ID" disabled></div><br>
 	<div class="input">Title: <input [(ngModel)]="dispEntry.name" placeholder="Title"></div><br>
 	<div class="input">Description: <input [(ngModel)]="dispEntry.info" placeholder="Description"></div><br>
 	<mat-form-field>

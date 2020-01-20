@@ -1,6 +1,6 @@
 .list {
 	width: 450px;
-	background-color: #f4f5f7;
+	background: #f4f5f7;
 	border-radius: 5px;
 	color: black;
 	height: auto;
@@ -93,6 +93,8 @@ nav button {
 	font-size: 1em;
 	font-weight: bold;
 	cursor: pointer;
+	margin-top: 10px;
+	overflow: hidden;
 }
 
 nav button.selected {

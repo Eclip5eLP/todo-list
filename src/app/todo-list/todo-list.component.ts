@@ -121,7 +121,7 @@ export class TodoListComponent implements OnInit {
   delList(): void {
     var idd = window.location.pathname.split("/").pop();
     this.getListsService.deleteList(parseInt(idd)).subscribe();
-    window.location.href = this.getListsService.listsUrl.replace("/api", "");
+    window.location.href = window.location.origin;
   }
 
   ngOnInit() {
