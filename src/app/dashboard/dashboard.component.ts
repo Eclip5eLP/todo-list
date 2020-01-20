@@ -25,18 +25,6 @@ export class DashboardComponent implements OnInit {
   dispInfo = null;
   dashboard_amount = 3;
 
-  constructor(
-  	private getListsService: LoadListsService,
-  	private datepipe: DatePipe,
-    public messageService: MessageService
-  ) { }
-
-  ngOnInit() {
-  	this.getLists();
-    this.getAllLists();
-    this.getDash();
-  }
-
   //Generate ID for new List
   genId(lists: Lists[]): number {
     //return lists.length > 0 ? Math.max(...lists.map(list => list.id)) + 1 : 11;
@@ -138,5 +126,17 @@ export class DashboardComponent implements OnInit {
         )
       }
     );
+  }
+
+  constructor(
+    public getListsService: LoadListsService,
+    private datepipe: DatePipe,
+    public messageService: MessageService
+  ) { }
+
+  ngOnInit() {
+    this.getLists();
+    this.getAllLists();
+    this.getDash();
   }
 }

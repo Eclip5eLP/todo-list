@@ -25,7 +25,7 @@ export class ShowInfoComponent implements OnInit {
   @Input() dispInfo: Entries;
   @Input() dispUser: Users;
   @Input() dispList: Lists;
-  @Input() dispEntry: Entries;
+  @Input() dispEntry: any;
 
   saveUser(): void {
     this.listsService.updateUser(this.dispUser).subscribe(f => {
@@ -47,24 +47,28 @@ export class ShowInfoComponent implements OnInit {
       date = data[1] + "/" + data[0] + "/" + data[2];
       this.dispEntry.date = date;
     }
-    this.dispEntry.list = this.dispEntry.list;
+    this.dispEntry.list = parseInt(this.dispEntry.list);
     this.listsService.updateEntry(this.dispEntry).subscribe(f => {
       this.dispEntry = null;
     });
   }
 
   constructor(
-    private listsService: LoadListsService,
+    public listsService: LoadListsService,
     private datepipe: DatePipe,
     public messageService: MessageService
   ) { }
 
   save(date: any): void {
-  	if (!date) { console.log("Cannot Save invalid date"); this.messageService.add("Cannot Save invalid date"); return; }
-    let data = date.split("/");
-    date = data[1] + "/" + data[0] + "/" + data[2];
-  	this.dispInfo.date = date;
-  	this.listsService.updateEntry(this.dispInfo).subscribe(f => {
+  	if (!date) {
+      date = this.dispInfo.date
+    } else {
+      let data = date.split("/");
+      date = data[1] + "/" + data[0] + "/" + data[2];
+      this.dispInfo.date = date;
+    }
+    this.dispInfo.list = this.dispInfo.list;
+    this.listsService.updateEntry(this.dispInfo).subscribe(f => {
       this.dispInfo = null;
     });
   }

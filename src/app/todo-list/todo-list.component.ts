@@ -28,10 +28,10 @@ export class TodoListComponent implements OnInit {
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
   allEntries: any;
-  private allowView = false;
+  public allowView = false;
 
   constructor(
-  	private getListsService: LoadListsService,
+  	public getListsService: LoadListsService,
   	private datepipe: DatePipe,
     public messageService: MessageService
   ) { }
@@ -121,7 +121,7 @@ export class TodoListComponent implements OnInit {
   delList(): void {
     var idd = window.location.pathname.split("/").pop();
     this.getListsService.deleteList(parseInt(idd)).subscribe();
-    window.location.href = this.getListsService.listsUrl.replace("/api", "");
+    window.location.href = window.location.origin;
   }
 
   ngOnInit() {

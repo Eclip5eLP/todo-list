@@ -20,10 +20,10 @@ import { MessageService } from "../message.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private login_u = "";
-  private login_p = "";
-  private register_u = "";
-  private register_p = "";
+  login_u = "";
+  login_p = "";
+  register_u = "";
+  register_p = "";
   users: any;
 
   //Generate ID for new User
@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit {
   //Logout
   logout() {
   	deleteCookie("username");
+    deleteCookie("apikey");
   	this.refresh();
   }
 
@@ -85,7 +86,7 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(
-  	private getListsService: LoadListsService,
+  	public getListsService: LoadListsService,
   	private datepipe: DatePipe,
     public messageService: MessageService
   ) { }

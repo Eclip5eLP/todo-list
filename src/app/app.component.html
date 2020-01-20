@@ -3,9 +3,18 @@
     <title>ToDo List</title>
   </head>
   <body>
+    <header>
+      <div class="logo">
+        <div class="logo-text">
+          <h1 style="color:white">
+            {{title}}
+          </h1>
+          {{subtitle}}
+        </div>
+      </div>
+      <nav></nav>
+    </header>
     <div id="main">
-      <h1>{{title}}</h1>
-      <h2>{{subtitle}}</h2>
       <app-login></app-login>
 	    <router-outlet></router-outlet>
 	    <app-messages></app-messages>
