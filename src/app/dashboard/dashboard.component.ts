@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   tasks: Entries[];
   dispInfo = null;
   dashboard_amount = 3;
+  temp: any;
 
   //Generate ID for new List
   genId(lists: Lists[]): number {
@@ -38,8 +39,9 @@ export class DashboardComponent implements OnInit {
     if (!name) { console.log("Name cannot be empty"); return; }
     let list = {id: this.genId(this.allLists), name: name, users:[this.getListsService.user]};
     this.getListsService.addList(list as Lists)
-      .subscribe(list => {
+      .subscribe(listx => {
         this.lists.push(list);
+        this.getLists();
       });
   }
 
@@ -56,7 +58,11 @@ export class DashboardComponent implements OnInit {
 
   //Show Edit Dialogue for Entry
   showInfo(entry: Entries): void {
-	  if (this.dispInfo == null) this.dispInfo = entry;
+	  this.dispInfo = null;
+    this.temp = entry;
+    setTimeout((entry) => {
+      this.dispInfo = this.temp;
+    }, 10);
   }
 
   //Delete Entry
@@ -71,7 +77,6 @@ export class DashboardComponent implements OnInit {
   }
 
   //Get all Lists for current User
-  //(TODO) Add Important/Urgent Task displaying
   getLists(): void {
     this.getListsService.getLists()
       .subscribe(lists => {
@@ -80,6 +85,7 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  //Get all Lists
   getAllLists(): void {
     this.getListsService.getAllLists()
       .subscribe(lists => {

@@ -25,10 +25,13 @@ export class TodoListComponent implements OnInit {
   dispInfo = null;
   lists: any;
   lists$: any;
+  LISTS: any;
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
   allEntries: any;
   public allowView = false;
+  tab = "";
+  private temp: any;
 
   constructor(
   	public getListsService: LoadListsService,
@@ -66,7 +69,16 @@ export class TodoListComponent implements OnInit {
 
   //Show Edit Dialogue for Entry
   showInfo(entry: Entries): void {
-	  this.dispInfo = entry;
+    this.dispInfo = null;
+    this.temp = entry;
+    setTimeout((entry) => {
+      this.dispInfo = this.temp;
+    }, 10);
+  }
+
+  //Refresh Browser Window
+  refresh(): void {
+    window.location.reload();
   }
 
   //Get all Entries of current List
@@ -99,15 +111,25 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  //Get all Lists
+  getAllLists(): void {
+    this.getListsService.getAllLists()
+      .subscribe(lists => {
+        this.LISTS = lists;
+      }
+    );
+  }
+
   //Add new Entry to current List
   add(name: string): void {
   	name = name.trim();
     var idd = window.location.pathname.split("/").pop();
   	if (!name) { console.log("Name cannot be empty"); return; }
-	  let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, date: "?", info: "No Info yet", id: this.genId(this.allEntries), list: parseInt(idd)};
+	  let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, state: "todo", date: "?", info: "No Info yet", id: this.genId(this.allEntries), list: parseInt(idd)};
   	this.getListsService.addEntry(entry as Entries)
-  	  .subscribe(entry => {
+  	  .subscribe(entryx => {
   	  	this.lists.push(entry);
+        this.getLists();
   	  });
   }
 
@@ -121,10 +143,22 @@ export class TodoListComponent implements OnInit {
   delList(): void {
     var idd = window.location.pathname.split("/").pop();
     this.getListsService.deleteList(parseInt(idd)).subscribe();
-    window.location.href = window.location.origin;
+  }
+
+  //Change Tab to ID
+  loadTab(): void {
+    setTimeout(() => {
+      this.tab = window.location.pathname.split("/").pop();
+      this.getAllLists();
+      this.getLists();
+      this.getAllEntries();
+      this.ownsList();
+    }, 10);
   }
 
   ngOnInit() {
+    this.tab = window.location.pathname.split("/").pop();
+    this.getAllLists();
   	this.getLists();
     this.getAllEntries();
     this.ownsList();

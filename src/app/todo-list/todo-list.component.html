@@ -3,6 +3,9 @@
 		<h1>List</h1>
 		<nav>
 			<button routerLink="/dashboard">Dashboard</button>
+			<span *ngFor="let list of LISTS; let i = index">
+				<button (click)="loadTab();" routerLink="/lists/{{list.id}}" [ngClass]="tab == list.id ? 'selected': 'none'">{{list.name}}</button>
+			</span>
 		</nav>
 		<div class="container">
 			<div *ngIf="!showFilter; else filteredList">
@@ -26,7 +29,7 @@
 					</div>
 					<div class="list">
 						<h2>Delete this List</h2>
-						<button (click)="delList();" class="btn">Delete List</button>
+						<button (click)="delList();" class="btn" routerLink="/dashboard">Delete List</button>
 					</div>
 				</div>
 			</div>

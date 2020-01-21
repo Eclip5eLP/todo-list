@@ -38,3 +38,15 @@
 	border-radius: 5px;
 	cursor: pointer;
 }
+
+textarea {
+	resize: none;
+	background-color: rgba(0,0,0,0);
+	border-color: rgba(0,0,0,0);
+}
+
+.close-btn {
+	border-radius: 6px;
+	cursor: pointer;
+	border: 1px solid gray;
+}
