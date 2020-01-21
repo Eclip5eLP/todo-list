@@ -28,7 +28,7 @@ h2, h3 {
 }
 
 #main {
-	margin: 2em;
+	margin: -1px;
 }
 
 body, input[type="text"], button {
@@ -58,110 +58,95 @@ nav a.active {
   	color: #039be5;
 }
 
-body.dark {
-  	background-color: rgb(30,34,39);
-  	color: #fff;
-}
-
-body.dark code[class*=language-],
-body.dark table tbody>tr:nth-child(odd)>td,
-body.dark table tbody>tr:nth-child(odd)>th {
-  	background: #282c34
-}
-
-body.dark pre {
-	background: #282c34;
-	color: #e8e8e8;
-}
 
 
-
-/*
 
 html { 
   height: 100%;
 }
 
 * { 
-  margin: 0; 
-  padding: 0;
+  	margin: 0; 
+  	padding: 0;
 }
 
 article, aside, figure, footer, header, hgroup, nav, section { 
-  display:block;
+  	display:block;
 }
 
 body { 
-  font: normal .80em arial, sans-serif;
+  	font: normal .80em arial, sans-serif;
+  	background: #F4F5F7;
+  	color: #7A7A68;
 }
 
 p { 
-  padding: 0 0 20px 0;
-  line-height: 1.7em;
+  	padding: 0 0 20px 0;
+  	line-height: 1.7em;
 }
 
 img { 
-  border: 0;
+  	border: 0;
 }
 
 h1, h2, h3, h4, h5, h6 { 
-  color: #362C20;
-  letter-spacing: 0em;
-  padding: 0 0 5px 0;
+  	color: #362C20;
+  	letter-spacing: 0em;
+  	padding: 0 0 5px 0;
 }
 
 h1, h2, h3 { 
-  font: normal 140% 'Yanone Kaffeesatz', arial;
-  margin: 0 0 15px 0;
-  padding: 15px 0 5px 0;
-  color: #000;
-  text-shadow: 1px 1px 1px #fff;
+  	font: normal 140% 'Yanone Kaffeesatz', arial;
+  	margin: 0 0 15px 0;
+  	padding: 15px 0 5px 0;
+  	color: #000;
+  	text-shadow: 1px 1px 1px #fff;
 }
 
 h2 { 
-  font-size: 160%;
-  padding: 9px 0 5px 0;
-  color: #AEB002;
+  	font-size: 160%;
+  	padding: 9px 0 5px 0;
+  	color: #AEB002;
 }
 
 h3 { 
-  font-size: 140%;
-  padding: 5px 0 0 0;
+  	font-size: 140%;
+  	padding: 5px 0 0 0;
 }
 
 h4, h6 { 
-  color: #AEB002;
-  padding: 0 0 5px 0;
-  font: normal 110% arial;
-  text-transform: uppercase;
+  	color: #AEB002;
+  	padding: 0 0 5px 0;
+  	font: normal 110% arial;
+  	text-transform: uppercase;
 }
 
 h5, h6 { 
-  color: #888;
-  font: normal 95% arial;
-  letter-spacing: normal;
-  padding: 0 0 15px 0;
+  	color: #888;
+  	font: normal 95% arial;
+  	letter-spacing: normal;
+  	padding: 0 0 15px 0;
 }
 
 a, a:hover { 
-  outline: none;
-  text-decoration: underline;
-  color: #03D1FD;
+  	outline: none;
+  	text-decoration: underline;
+  	color: #03D1FD;
 }
 
 a:hover { 
-  text-decoration: none;
+  	text-decoration: none;
 }
 
 blockquote { 
-  margin: 20px 0; 
-  padding: 10px 20px 0 20px;
-  border: 1px solid #E5E5DB;
-  background: #FFF;
+  	margin: 20px 0; 
+  	padding: 10px 20px 0 20px;
+  	border: 1px solid #E5E5DB;
+  	background: #FFF;
 }
 
 ul { 
-  margin: 2px 0 22px 17px;
+  	margin: 2px 0 22px 17px;
 }
 
 ul li { 
@@ -463,5 +448,3 @@ table tr td {
   color: #bbb;
   background:#5E5E5E;
 }
-
-*/

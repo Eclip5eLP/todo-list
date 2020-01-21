@@ -83,16 +83,17 @@
 
 nav button {
 	width: 125px;
-	margin-left: 10px;
-	margin-right: 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: #E6E6E6;
-	color: #8C8C8C;
+	border: 1px solid gray;
+	background-color: #8C8C8C;
+	color: #FFFFFF;
 	padding: 10px;
 	font-size: 1em;
 	font-weight: bold;
 	cursor: pointer;
+	overflow: hidden;
+
+	float: left;
+	position: relative;
 }
 
 nav button.selected {

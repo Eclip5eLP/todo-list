@@ -1,11 +1,11 @@
 <div *ngIf="getListsService.user != null">
-	<h1>Dashboard</h1>
 	<nav>
 		<button routerLink="/dashboard" class="selected">Dashboard</button>
 		<span *ngFor="let list of lists; let i = index">
 			<button routerLink="/lists/{{list.id}}">{{list.name}}</button>
 		</span>
-	</nav>
+	</nav><br><br>
+	<h1>Dashboard</h1>
 	<div class="list" *ngIf="tasks; else noLists">
 		<h3>Important/Urgent Tasks</h3>
 		<ul class="sub" *ngFor="let entry of tasks; let i = index">

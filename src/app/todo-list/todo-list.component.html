@@ -1,9 +1,12 @@
 <div *ngIf="getListsService.user != null">
 	<div *ngIf="this.allowView; else notAllowed">
-		<h1>List</h1>
 		<nav>
 			<button routerLink="/dashboard">Dashboard</button>
-		</nav>
+			<span *ngFor="let list of LISTS; let i = index">
+				<button routerLink="/lists/{{list.id}}" [ngClass]="tab == list.id ? 'selected': 'none'" (click)="refresh();">{{list.name}}</button>
+			</span>
+		</nav><br><br>
+		<h1>List</h1>
 		<div class="container">
 			<div *ngIf="!showFilter; else filteredList">
 				<div *ngIf="lists; else noLists">

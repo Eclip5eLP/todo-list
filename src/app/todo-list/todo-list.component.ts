@@ -25,10 +25,12 @@ export class TodoListComponent implements OnInit {
   dispInfo = null;
   lists: any;
   lists$: any;
+  LISTS: any;
   private searchTerms = new Subject<string>();
   showFilter: boolean = false;
   allEntries: any;
   public allowView = false;
+  tab = "";
 
   constructor(
   	public getListsService: LoadListsService,
@@ -45,6 +47,22 @@ export class TodoListComponent implements OnInit {
   	}
     this.searchTerms.next(term);
 
+  }
+
+  //Refresh Page
+  refresh(delay: number = 1) {
+    setTimeout(function(){
+      window.location.reload();
+    }, delay);
+  }
+
+  //Retrieve all Lists
+  getAllLists(): void {
+    this.getListsService.getAllLists()
+      .subscribe(lists => {
+        this.LISTS = lists;
+      }
+    );
   }
 
   //isType functions
@@ -125,6 +143,8 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.tab = window.location.pathname.split("/").pop();
+    this.getAllLists();
   	this.getLists();
     this.getAllEntries();
     this.ownsList();
