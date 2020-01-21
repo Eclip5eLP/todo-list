@@ -120,6 +120,15 @@ export class TodoListComponent implements OnInit {
     );
   }
 
+  //Get all Lists of User
+  getMyLists(): void {
+    this.getListsService.getLists()
+      .subscribe(lists => {
+        this.LISTS = lists;
+      }
+    );
+  }
+
   //Add new Entry to current List
   add(name: string): void {
   	name = name.trim();
@@ -158,7 +167,7 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {
     this.tab = window.location.pathname.split("/").pop();
-    this.getAllLists();
+    this.getMyLists();
   	this.getLists();
     this.getAllEntries();
     this.ownsList();
