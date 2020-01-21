@@ -155,7 +155,7 @@ export class LoadListsService {
   addEntry(entry: Entries): Observable<Entries> {
     let idd = window.location.pathname.split("/").pop();
   	return this.http.post<Entries>(this.listsUrl + "/lists/a/" + idd, entry, this.httpOptions).pipe(
-  	  tap((newEntry: Entries) => { console.log("Added new Entry to List"); this.refresh(); }),
+  	  tap((newEntry: Entries) => { console.log("Added new Entry to List"); /* this.refresh(); */ }),
   	  catchError(this.handleError<Entries>("addEntry"))
   	);
   }
@@ -165,7 +165,7 @@ export class LoadListsService {
   	const id = typeof entry === "number" ? entry : entry.id;
   	const url = `${this.listsUrl}/${id}`;
   	return this.http.delete<Entries>(url, this.httpOptions).pipe(
-  	  tap(_ => console.log("Entry removed")),
+  	  tap(_ => { console.log("Entry removed"); this.messageService.add("Entry removed"); }),
   	  catchError(this.handleError<Entries>("removeEntry"))
   	);
   }
@@ -173,7 +173,7 @@ export class LoadListsService {
   //Create a new List for current User
   addList(list: Lists): Observable<Lists> {
     return this.http.post<Lists>(this.listsUrl + "/lists", list, this.httpOptions).pipe(
-      tap((newList: Lists) => { console.log("Created new List"); this.refresh(); }),
+      tap((newList: Lists) => { console.log("Created new List"); this.messageService.add("Created new List") }),
       catchError(this.handleError<Lists>("addList"))
     );
   }
@@ -183,7 +183,7 @@ export class LoadListsService {
     const id = typeof list === "number" ? list : list.id;
     const url = `${this.listsUrl}/lists/r/${id}`;
     return this.http.delete<Lists>(url, this.httpOptions).pipe(
-      tap(_ => console.log("List removed")),
+      tap(_ => { console.log("List removed"); this.messageService.add("List Removed"); }),
       catchError(this.handleError<Lists>("deleteList"))
     );
   }
@@ -193,7 +193,7 @@ export class LoadListsService {
     const id = typeof user === "number" ? user : user.id;
     const url = `${this.listsUrl}/users/${id}`;
     return this.http.delete<Users>(url, this.httpOptions).pipe(
-      tap(_ => { console.log("User Deleted"); this.messageService.add("User Deleted") }),
+      tap(_ => { console.log("User Deleted"); this.messageService.add("User Deleted"); }),
       catchError(this.handleError<Users>("deleteUser"))
     );
   }

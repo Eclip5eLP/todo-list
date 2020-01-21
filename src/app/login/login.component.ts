@@ -62,7 +62,8 @@ export class LoginComponent implements OnInit {
 	let usr = {id: this.genId(this.users), username: this.register_u, password: this.register_p, email: "", active: true, apikey: "null", roles: ["user"]};
 	this.getListsService.createUser(usr as Users)
   	.subscribe(usr => {
-  		this.refresh();
+  		this.loadUsers();
+      this.messageService.add("Registration successfull");
   	});
   }
 

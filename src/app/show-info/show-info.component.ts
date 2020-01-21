@@ -27,18 +27,29 @@ export class ShowInfoComponent implements OnInit {
   @Input() dispList: Lists;
   @Input() dispEntry: any;
 
+  //Close Dialogue
+  close() {
+    this.dispEntry = null;
+    this.dispUser = null;
+    this.dispList = null;
+    this.dispInfo = null;
+  }
+
+  //Save Edited User
   saveUser(): void {
     this.listsService.updateUser(this.dispUser).subscribe(f => {
       this.dispUser = null;
     });
   }
 
+  //Save Edited List
   saveList(): void {
     this.listsService.updateList(this.dispList).subscribe(f => {
       this.dispList = null;
     });
   }
 
+  //Save Edited Entry
   saveEntry(date: any): void {
     if (!date) {
       date = this.dispEntry.date
@@ -59,6 +70,7 @@ export class ShowInfoComponent implements OnInit {
     public messageService: MessageService
   ) { }
 
+  //Save Edited Entry (User Only)
   save(date: any): void {
   	if (!date) {
       date = this.dispInfo.date
@@ -73,6 +85,7 @@ export class ShowInfoComponent implements OnInit {
     });
   }
 
+  //Change State of Entry
   changeState(entry: Entries, state: any) {
   	entry.state = state;
   	this.listsService.updateEntry(entry).subscribe();

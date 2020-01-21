@@ -28,6 +28,7 @@ export class BackendComponent implements OnInit {
   dispUser: Users;
   dispEntry: Entries;
   dispList: Lists;
+  temp: any;
 
   //Goto List
   gotoList(id: any): void {
@@ -102,17 +103,29 @@ export class BackendComponent implements OnInit {
 
   //Show Edit Dialogue for Users
   editUser(user: Users): void {
-    this.dispUser = user;
+    this.dispUser = null;
+    this.temp = user;
+    setTimeout((user) => {
+      this.dispUser = this.temp;
+    }, 10);
   }
 
   //Show Edit Dialogue for Lists
   editList(list: Lists): void {
-    this.dispList = list;
+    this.dispList = null;
+    this.temp = list;
+    setTimeout((list) => {
+      this.dispList = this.temp;
+    }, 10);
   }
 
   //Show Edit Dialogue for Entries
   editEntry(entry: Entries): void {
-    this.dispEntry = entry;
+    this.dispEntry = null;
+    this.temp = entry;
+    setTimeout((entry) => {
+      this.dispEntry = this.temp;
+    }, 10);
   }
 
   //Add a new List
@@ -121,7 +134,7 @@ export class BackendComponent implements OnInit {
     if (!name) { console.log("Name cannot be empty"); return; }
     let list = {id: this.genIdList(this.LISTS), name: name, users:["system"]};
     this.getListsService.addList(list as Lists)
-      .subscribe(list => {
+      .subscribe(listx => {
         this.LISTS.push(list);
       });
   }
@@ -130,9 +143,9 @@ export class BackendComponent implements OnInit {
   addEntry(name: string): void {
     name = name.trim();
     if (!name) { console.log("Name cannot be empty"); return; }
-    let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, date: "?", info: "No Info yet", id: this.genIdEntry(this.ENTRIES), list: -1};
+    let entry = {name: name, isDone: false, isImportant: false, isUrgent: false, date: "?", info: "No Info yet", id: this.genIdEntry(this.ENTRIES), list: -1, state: "todo", dispdate: "?"};
     this.getListsService.addEntry(entry as Entries)
-      .subscribe(entry => {
+      .subscribe(entryx => {
         this.ENTRIES.push(entry);
       });
   }

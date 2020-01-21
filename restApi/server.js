@@ -43,10 +43,15 @@ app.post("/api/login", (req, resp) => {
       if (res.length) {
          bcrypt.compare(pass, res[0].password, (err, f) => {
             if (f) {
-               log("Login successfull");
-               var str = randString();
-               users.updateOne({ username: name, password: res[0].password }, { $set: { apikey: str } });
-               resp.send({key: str});
+               if (res[0].active) {
+                  log("Login successfull");
+                  var str = randString();
+                  users.updateOne({ username: name, password: res[0].password }, { $set: { apikey: str } });
+                  resp.send({key: str});
+               } else {
+                  log("Login failed: User is deactivated");
+                  resp.send("false");
+               }
             } else {
                log("Login failed: Passwords not matching");
                resp.send("false");
@@ -241,6 +246,7 @@ app.delete("/api/lists/r/:id", (req, resp) => {
    var id = req.params.id;
    log("Deleted List: " + id);
    lists.deleteOne({ id: parseInt(id) });
+   entries.deleteMany({ list: parseInt(id) });
 });
 
 //Delete an Entry by ID
